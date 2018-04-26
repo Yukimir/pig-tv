@@ -1,14 +1,43 @@
 <script src="https://cdn.bootcss.com/flv.js/1.3.3/flv.min.js"></script>
-<video id="videoElement"></video>
+<style>
+    .main-container {
+        height: 70%;
+        text-align:center;
+    }
+
+    .sub-container {
+        height: 30%;
+    }
+
+    video {
+        height: 100%;
+    }
+</style>
+<div style="background:black" class="main-container">
+    <video id="videoElement"></video>
+</div>
+<div style="background:gray" class="sub-container">
+    <video id="videoElement1"></video>
+</div>
 <script>
+    var host = 'tv.aigis.me'
     if (flvjs.isSupported()) {
         var videoElement = document.getElementById('videoElement');
+        var videoElement1 = document.getElementById('videoElement1');
         var flvPlayer = flvjs.createPlayer({
             type: 'flv',
-            url: 'ws://tv.aigis.me:8000/live/STREAM_NAME.flv'
+            url: `ws://${host}:8000/live/STREAM_NAME.flv`
         });
         flvPlayer.attachMediaElement(videoElement);
         flvPlayer.load();
         flvPlayer.play();
+
+        var flvPlayer1 = flvjs.createPlayer({
+            type: 'flv',
+            url: 'ws://tv.aigis.me:8000/live/STREAM_NAME1.flv'
+        });
+        flvPlayer1.attachMediaElement(videoElement1);
+        flvPlayer1.load();
+        flvPlayer1.play();
     }
 </script>
