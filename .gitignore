@@ -1,0 +1,17 @@
+node_modules
+images
+image/
+release
+proxy.conf
+user.conf
+cache
+dist
+setting.conf
+release-normal
+release-green
+.vs/
+config.conf
+dist-green
+app-builds
+mod
+./plugins
