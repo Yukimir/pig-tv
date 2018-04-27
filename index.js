@@ -1,4 +1,4 @@
-const NodeMediaServer = require('node-media-server');
+const NodeMediaServer = require('./node-media-server');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
