@@ -39,6 +39,7 @@ const nms = new NodeMediaServer(config)
 
 nms.on('postPublish', (id, StreamPath, args) => {
   let stream = new Stream(id,StreamPath);
+  console.log(stream);
   liveStreams.push(stream);
   io.emit('post-publish',stream);
 });

@@ -6,30 +6,52 @@
     <style>
         .main-container {
             height: 70%;
-            text-align: center;
+            display: flex;
+            justify-content: center;
         }
 
         .sub-container {
             height: 30%;
-            display:flex;
-            flex-wrap:nowrap;
+            display: flex;
+            flex-wrap: nowrap;
         }
 
         video {
             height: 100%;
         }
+        .video-container{
+            position: relative;
+        }
+        span {
+            top: 10px;
+            position: absolute;
+            background:white;
+            left:10px;
+        }
     </style>
-    <div style="background:black" class="main-container">
-        <video id="videoElement0"></video>
+    <div class="main-container">
+        <div class="video-container">
+            <video id="videoElement0"></video>
+            <span id="spanElement0"></span>
+        </div>
     </div>
     <div style="background:gray" class="sub-container">
-        <video id="videoElement1"></video>
-        <video id="videoElement2"></video>
-        <video id="videoElement3"></video>
+        <div class="video-container">
+            <video id="videoElement1"></video>
+            <span id="spanElement1"></span>
+        </div>
+        <div class="video-container">
+            <video id="videoElement2"></video>
+            <span id="spanElement2"></span>
+        </div>
+        <div class="video-container">
+            <video id="videoElement3"></video>
+            <span id="spanElement3"></span>
+        </div>
     </div>
 
     <script>
-        var host = 'live.aigis.me'
+        var host = 'localhost'
         if (flvjs.isSupported()) {
             /*
             var videoElement = document.getElementById('videoElement');
@@ -55,6 +77,8 @@
                     if (stream.flvPlayer) continue;
                     let elementid = 'videoElement' + i;
                     let videoElement = document.getElementById(elementid);
+                    let spanElement = document.getElementById('spanElement'+i);
+                    spanElement.innerHTML = stream.StreamPath.slice(6);
                     let flvPlayer = flvjs.createPlayer({
                         type: 'flv',
                         isLive: true,
@@ -66,6 +90,7 @@
                     flvPlayer.play();
                     if (i !== 0) flvPlayer.muted = true;
                     stream.flvPlayer = flvPlayer;
+                    stream.spanElement = spanElement;
                 }
             }
             function addStream(stream) {
@@ -84,6 +109,7 @@
                             liveStreams[i].flvPlayer.pause();
                             liveStreams[i].flvPlayer.destroy();
                             liveStreams[i].flvPlayer = undefined;
+                            liveStreams[i].spanElement.innerHTML = '';
                         }
                     }
                     liveStreams.splice(i, 1);
