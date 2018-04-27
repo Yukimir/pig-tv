@@ -1,10 +1,25 @@
 const NodeMediaServer = require('node-media-server');
 const express = require('express');
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
+const liveStreams = [];
+class Stream {
+  constructor(id, StreamPath) {
+    this.id = id;
+    this.StreamPath = StreamPath;
+  }
+}
 app.use(express.static('public'));
 
-app.listen(3000,() => console.log('Example app listening on port 3000!'));
+io.on('connection', function (socket) {
+  socket.on('request-liveStreams', (v) => {
+    socket.emit('liveStreams-list',liveStreams);
+  })
+})
+
+http.listen(3000, () => console.log('Example app listening on port 3000!'));
 
 const config = {
   rtmp: {
@@ -20,5 +35,19 @@ const config = {
   }
 };
 
-var nms = new NodeMediaServer(config)
+const nms = new NodeMediaServer(config)
+
+nms.on('postPublish', (id, StreamPath, args) => {
+  let stream = new Stream(id,StreamPath);
+  liveStreams.push(stream);
+  io.emit('post-publish',stream);
+});
+nms.on('donePublish', (id, StreamPath, args) => {
+  let i = liveStreams.findIndex((v) => {
+    return v.id === id;
+  })
+  if (i !== -1) liveStreams.splice(i, 1);
+  io.emit('donw-publish',id);
+});
+
 nms.run();
