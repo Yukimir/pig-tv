@@ -70,15 +70,15 @@
                 </div>
             </div>
             <div style="background:gray" class="sub-container">
-                <div class="video-container">
+                <div class="video-container" onclick="switchStream(1)">
                     <video id="videoElement1"></video>
                     <span id="spanElement1"></span>
                 </div>
-                <div class="video-container">
+                <div class="video-container" onclick="switchStream(2)">
                     <video id="videoElement2"></video>
                     <span id="spanElement2"></span>
                 </div>
-                <div class="video-container">
+                <div class="video-container" onclick="switchStream(3)">
                     <video id="videoElement3"></video>
                     <span id="spanElement3"></span>
                 </div>
@@ -93,6 +93,16 @@
         if (flvjs.isSupported()) {
             let liveStreams = [];
             let djStreams = [];
+            function switchStream(index){
+                if(!liveStreams[0]) return;
+                if(!liveStreams[i]) return;
+                if(!liveStreams[i].flvPlayer) return;
+                const mainStreams = liveStreams[0];
+                const subStreams = liveStreams[i];
+                liveStreams[0] = subStreams;
+                liveStreams[i] = mainStreams;
+                loadStreamsByList();
+            }
             function loadStreamsByList(list) {
                 console.log(list);
                 if (list) liveStreams = list;
