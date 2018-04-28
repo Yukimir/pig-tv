@@ -21,10 +21,12 @@
 
         video {
             height: 100%;
+            max-width: 100%;
         }
 
         .video-container {
             position: relative;
+            text-align: center;
         }
 
         .container {
@@ -90,8 +92,9 @@
             let liveStreams = [];
             let djStreams = [];
             function loadStreamsByList(list) {
+                console.log(list);
                 if (list) liveStreams = list;
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 4; i++) {
                     let stream = liveStreams[i];
                     if (!stream) break;
                     if (stream.flvPlayer) continue;
