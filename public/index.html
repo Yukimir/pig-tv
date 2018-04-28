@@ -94,7 +94,7 @@
         var host = 'live.aigis.me'
         let liveStreams = [];
         let djStreams = [];
-        let closeStream = false;
+        let streamClosed = false;
         if (flvjs.isSupported()) {
             function closeStream() {
                 closeStream = true;
@@ -130,7 +130,7 @@
                 loadStreamsByList();
             }
             function loadStreamsByList(list) {
-                // if (closeStream) return;
+                if (streamClosed) return;
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
                     let stream = liveStreams[i];
