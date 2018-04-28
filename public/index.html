@@ -41,6 +41,7 @@
 
         .dj-container {
             width: 20%;
+            position:relative;
         }
 
         span {
@@ -56,6 +57,9 @@
             top: 10px;
             display: none;
         }
+        .alipay-box{
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -69,7 +73,7 @@
             <div id="dj-list"></div>
             <button onclick="closeStream()">只听DJ</button>
             <audio id="audioElement"></audio>
-            <div style="text-align: center">
+            <div class="alipay-box">
                 <img src="./alipay.png"/>
                 <p>我很可爱 请给我钱</p>
             </div>
