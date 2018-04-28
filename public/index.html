@@ -60,6 +60,7 @@
             <p>DJ列表</p>
             <br>
             <div id="dj-list"></div>
+            <button onclick="">只听DJ</button>
             <audio id="audioElement"></audio>
         </div>
         <div class="live-container">
@@ -93,7 +94,20 @@
         var host = 'live.aigis.me'
         let liveStreams = [];
         let djStreams = [];
+        let closeStream = false;
         if (flvjs.isSupported()) {
+            function closeStream() {
+                closeStream = true;
+                for (let i = 0; i < 4; i++) {
+                    const stream = liveStreams[i];
+                    if (stream && stream.flvPlayer) {
+                        stream.flvPlayer.pause();
+                        stream.flvPlayer.destroy();
+                        stream.flvPlayer.undefined;
+                        stream.spanElement.innerHTML = '';
+                    }
+                }
+            }
             function switchStream(i) {
                 if (!liveStreams[0]) return;
                 if (!liveStreams[i]) return;
@@ -116,6 +130,7 @@
                 loadStreamsByList();
             }
             function loadStreamsByList(list) {
+                if (closeStream) return;
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
                     let stream = liveStreams[i];
