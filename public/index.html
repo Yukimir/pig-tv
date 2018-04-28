@@ -49,10 +49,12 @@
             background: white;
             left: 10px;
         }
-        .stream-close{
-            position:absolute;
-            right:0;
-            top:10px;
+
+        .stream-close {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            display: none;
         }
     </style>
 </head>
@@ -67,6 +69,10 @@
             <div id="dj-list"></div>
             <button onclick="closeStream()">只听DJ</button>
             <audio id="audioElement"></audio>
+            <div style="text-align: center">
+                <img src="./alipay.png"/>
+                <p>我很可爱 请给我钱</p>
+            </div>
         </div>
         <div class="live-container">
             <div class="main-container">
