@@ -124,7 +124,8 @@
                     let elementid = 'videoElement' + i;
                     let videoElement = document.getElementById(elementid);
                     let spanElement = document.getElementById('spanElement' + i);
-                    spanElement.innerHTML = titleList[parseInt(Math.random() * (titleList.length), 10)] + '-' + stream.StreamPath.slice(6);
+                    let seed = stream.id.charCodeAt(0);
+                    spanElement.innerHTML = titleList[(seed % (titleList.length))] + '-' + stream.StreamPath.slice(6);
                     let flvPlayer = flvjs.createPlayer({
                         type: 'flv',
                         isLive: true,
