@@ -41,7 +41,7 @@
 
         .dj-container {
             width: 20%;
-            position:relative;
+            position: relative;
         }
 
         span {
@@ -55,14 +55,19 @@
             position: absolute;
             right: 0;
             top: 10px;
-            display: none;
         }
-        .alipay-box{
+
+        .alipay-box {
             text-align: center;
-            bottom:0;
+            bottom: 0;
             position: absolute;
-            left:50%;
-            transform:translate(-50%);
+            left: 50%;
+            transform: translate(-50%);
+            max-width: 100%;
+        }
+
+        img {
+            max-width: 100%;
         }
     </style>
 </head>
@@ -72,13 +77,21 @@
     <script src="/socket.io/socket.io.js"></script>
     <div class="container">
         <div class="dj-container">
-            <p>DJ列表</p>
+            <div class="info">
+                <p>请不要直播NSFW内容。</p>
+                <p>包括但不限于 18X游戏，18X视频，里番等。</p>
+                <p id="pigs-count"></p>
+            </div>
+            <br>
+            <p>DJ列表（点击DJ名切换DJ）</p>
             <br>
             <div id="dj-list"></div>
             <button onclick="closeStream()">只听DJ</button>
+            <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
             <audio id="audioElement"></audio>
             <div class="alipay-box">
-                <img src="./alipay.png"/>
+                <p>感谢钟佬的66.66元</p>
+                <img src="./alipay.png" />
                 <p>我很可爱 请给我钱</p>
             </div>
         </div>
@@ -114,15 +127,22 @@
 
     <script>
         const titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲']
-        var host = 'live.aigis.me'
+        var host = 'localhost'
         let liveStreams = [];
         let djStreams = [];
         let streamClosed = false;
+        let usingDJ;
+        let pigsCount = 0;
         if (flvjs.isSupported()) {
             function offStream(i) {
                 if (liveStreams[i]) {
                     removeStream(liveStreams[i].id);
                 }
+            }
+            function closeDJ() {
+                if (usingDJ.flvPlayer === undefined) return;
+                document.getElementById('muteDJ').innerHTML = usingDJ.flvPlayer.muted ? '不听DJ' : '要听DJ';
+                usingDJ.flvPlayer.muted = !usingDJ.flvPlayer.muted;
             }
             function closeStream() {
                 closeStream = true;
@@ -189,18 +209,32 @@
                 }
             }
             function genDjList() {
-                console.log('gened');
                 const djListElement = document.getElementById('dj-list');
                 djListElement.innerHTML = '';
                 for (let i = 0; i < djStreams.length; i++) {
                     const stream = djStreams[i];
                     const spanElement = document.createElement('p');
+                    const func = () => {
+                        return () => {
+                            let s = stream;
+                            switchDJ(s);
+                        }
+                    }
                     spanElement.innerHTML = stream.StreamPath.slice(9);
-                    if (i === 0) {
+                    spanElement.addEventListener('click', func());
+                    if (stream === usingDJ) {
                         spanElement.style = 'color:red';
                     }
                     djListElement.appendChild(spanElement);
                 }
+            }
+            function switchDJ(stream) {
+                if (stream === usingDJ) return;
+                if (usingDJ === undefined) return;
+                usingDJ.flvPlayer.destroy();
+                usingDJ.flvPlayer = undefined;
+                usingDJ = stream;
+                loadDjStreamByList();
             }
             function addStream(stream) {
                 liveStreams.push(stream);
@@ -231,7 +265,8 @@
                 genDjList();
                 const audioElement = document.getElementById('audioElement');
                 if (djList) djStreams = djList;
-                let stream = djStreams[0];
+                if (usingDJ === undefined) usingDJ = djStreams[0];
+                let stream = usingDJ;
                 if (!stream) return;
                 if (stream.flvPlayer) return;
                 let flvPlayer = flvjs.createPlayer({
@@ -260,6 +295,7 @@
                     djStreams[i].flvPlayer.pause();
                     djStreams[i].flvPlayer.destroy();
                     djStreams[i].flvPlayer = undefined;
+                    if (djStreams[i] === usingDJ) usingDJ = undefined;
                     djStreams.splice(i, 1);
                     loadDjStreamByList();
                 } else {
@@ -284,6 +320,10 @@
                 djStreams.push(stream);
                 loadDjStreamByList();
             });
+            socket.on('update-pig', (pigs) => {
+                pigsCount = pigs;
+                document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
+            })
             socket.emit('request-liveStreams');
         }
     </script>

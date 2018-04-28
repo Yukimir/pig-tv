@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 
 const liveStreams = [];
 const djStreams = [];
+let audienceCount = 0;
 class Stream {
   constructor(id, StreamPath) {
     this.id = id;
@@ -17,6 +18,13 @@ app.use(express.static('public'));
 io.on('connection', function (socket) {
   socket.on('request-liveStreams', (v) => {
     socket.emit('liveStreams-list', liveStreams, djStreams);
+    audienceCount += 1;
+    io.emit('update-pig', audienceCount);
+  })
+  socket.on('disconnect', (v) => {
+    audienceCount -= 1;
+    audienceCount = audienceCount < 0 ? 0 : audienceCount;
+    io.emit('update-pig', audienceCount);
   })
 })
 
