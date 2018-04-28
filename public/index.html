@@ -101,10 +101,20 @@
                 const subStreams = liveStreams[i];
                 liveStreams[0] = subStreams;
                 liveStreams[i] = mainStreams;
+
+                liveStreams[i].flvPlayer.pause();
+                liveStreams[i].flvPlayer.destroy();
+                liveStreams[i].flvPlayer = undefined;
+                liveStreams[i].spanElement.innerHTML = '';
+
+                liveStreams[0].flvPlayer.pause();
+                liveStreams[0].flvPlayer.destroy();
+                liveStreams[0].flvPlayer = undefined;
+                liveStreams[0].spanElement.innerHTML = '';
+
                 loadStreamsByList();
             }
             function loadStreamsByList(list) {
-                console.log(list);
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
                     let stream = liveStreams[i];
@@ -206,6 +216,7 @@
                     djStreams.splice(i, 1);
                     loadDjStreamByList();
                 }
+                if(djStreams.length === 0 && liveStreams[0]) liveStreams[0].flvPlayer.muted = false;
             }
             var socket = io();
             socket.on('liveStreams-list', (liveList, djList) => {
