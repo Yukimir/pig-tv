@@ -89,6 +89,7 @@
 
 
     <script>
+        const titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲']
         var host = 'live.aigis.me'
         let liveStreams = [];
         let djStreams = [];
@@ -123,7 +124,7 @@
                     let elementid = 'videoElement' + i;
                     let videoElement = document.getElementById(elementid);
                     let spanElement = document.getElementById('spanElement' + i);
-                    spanElement.innerHTML = stream.StreamPath.slice(6);
+                    spanElement.innerHTML = titleList[parseInt(Math.random() * (titleList.length + 1), 10)] + '-' + stream.StreamPath.slice(6);
                     let flvPlayer = flvjs.createPlayer({
                         type: 'flv',
                         isLive: true,
@@ -137,7 +138,7 @@
                     flvPlayer.attachMediaElement(videoElement);
                     if (i !== 0) {
                         flvPlayer.muted = true;
-                        console.log(i,stream);
+                        console.log(i, stream);
                     }
                     flvPlayer.load();
                     flvPlayer.play();
@@ -221,7 +222,7 @@
                     djStreams.splice(i, 1);
                     loadDjStreamByList();
                 }
-                if(djStreams.length === 0 && liveStreams[0]) liveStreams[0].flvPlayer.muted = false;
+                if (djStreams.length === 0 && liveStreams[0]) liveStreams[0].flvPlayer.muted = false;
             }
             var socket = io();
             socket.on('liveStreams-list', (liveList, djList) => {
