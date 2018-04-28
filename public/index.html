@@ -60,7 +60,7 @@
             <p>DJ列表</p>
             <br>
             <div id="dj-list"></div>
-            <button onclick="">只听DJ</button>
+            <button onclick="closeStream()">只听DJ</button>
             <audio id="audioElement"></audio>
         </div>
         <div class="live-container">
@@ -130,7 +130,7 @@
                 loadStreamsByList();
             }
             function loadStreamsByList(list) {
-                if (closeStream) return;
+                // if (closeStream) return;
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
                     let stream = liveStreams[i];
