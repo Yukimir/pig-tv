@@ -5,6 +5,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const liveStreams = [];
+const djStreams = [];
 class Stream {
   constructor(id, StreamPath) {
     this.id = id;
@@ -15,7 +16,7 @@ app.use(express.static('public'));
 
 io.on('connection', function (socket) {
   socket.on('request-liveStreams', (v) => {
-    socket.emit('liveStreams-list',liveStreams);
+    socket.emit('liveStreams-list', liveStreams, djStreams);
   })
 })
 
@@ -38,17 +39,27 @@ const config = {
 const nms = new NodeMediaServer(config)
 
 nms.on('postPublish', (id, StreamPath, args) => {
-  let stream = new Stream(id,StreamPath);
-  console.log(stream);
-  liveStreams.push(stream);
-  io.emit('post-publish',stream);
+  let stream = new Stream(id, StreamPath);
+  console.log(StreamPath.indexOf('dj'));
+  if (StreamPath.indexOf('dj-') === 6) {
+    djStreams.push(stream);
+    io.emit('dj-post-publish', stream);
+  } else {
+    liveStreams.push(stream);
+    io.emit('post-publish', stream);
+  }
+
 });
 nms.on('donePublish', (id, StreamPath, args) => {
   let i = liveStreams.findIndex((v) => {
     return v.id === id;
   })
   if (i !== -1) liveStreams.splice(i, 1);
-  io.emit('donw-publish',id);
+  i = djStreams.findIndex((v) => {
+    return v.id === id;
+  })
+  if (i !== -1) djStreams.splice(i, 1);
+  io.emit('done-publish', id);
 });
 
 nms.run();
