@@ -130,13 +130,17 @@
                         cors: true,
                         url: `ws://${host}:8000${stream.StreamPath}.flv`,
                     })
-                    flvPlayer.attachMediaElement(videoElement);
-                    flvPlayer.load();
-                    flvPlayer.play();
-                    console.log(i,stream);
-                    if (i !== 0) flvPlayer.muted = true;
+
                     stream.flvPlayer = flvPlayer;
                     stream.spanElement = spanElement;
+
+                    flvPlayer.attachMediaElement(videoElement);
+                    if (i !== 0) {
+                        flvPlayer.muted = true;
+                        console.log(i,stream);
+                    }
+                    flvPlayer.load();
+                    flvPlayer.play();
                 }
             }
             function genDjList() {
