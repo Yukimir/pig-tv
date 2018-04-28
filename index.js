@@ -16,9 +16,9 @@ class Stream {
 app.use(express.static('public'));
 
 io.on('connection', function (socket) {
+  audienceCount += 1;
   socket.on('request-liveStreams', (v) => {
     socket.emit('liveStreams-list', liveStreams, djStreams);
-    audienceCount += 1;
     io.emit('update-pig', audienceCount);
   })
   socket.on('disconnect', (v) => {
