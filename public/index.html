@@ -133,6 +133,7 @@
                     flvPlayer.attachMediaElement(videoElement);
                     flvPlayer.load();
                     flvPlayer.play();
+                    console.log(i,stream);
                     if (i !== 0) flvPlayer.muted = true;
                     stream.flvPlayer = flvPlayer;
                     stream.spanElement = spanElement;
