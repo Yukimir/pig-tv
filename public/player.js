@@ -42,6 +42,7 @@ class Player {
         }
     }
     createFlvPlayer() {
+        let muted = this.muted;
         let flvPlayer = flvjs.createPlayer({
             type: 'flv',
             isLive: true,
@@ -52,6 +53,7 @@ class Player {
         flvPlayer.attachMediaElement(this.videoElement);
         flvPlayer.load();
         flvPlayer.play();
+        if(this.muted) flvPlayer.muted = true;
     }
     changeTags() {
         let seed = this.stream.id.charCodeAt(0);
