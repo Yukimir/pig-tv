@@ -252,7 +252,7 @@
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
                     players[i].changeStream(liveStreams[i]);
-                    if (i !== 0) players.muted = true;
+                    if (i !== 0) players[i].muted = true;
                 }
             }
             // DJ
