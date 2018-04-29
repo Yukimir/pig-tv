@@ -2,9 +2,24 @@
 
 <head>
     <title>母猪TV-放飞自我的舞台</title>
+    <link rel="stylesheet" href="player.css" type="text/css" />
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
     <style>
-        html {
+        html,
+        body {
             overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .background {
+            position:fixed;
+            height:100%;
+            width:100%;
+            background: url('./background.png');
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            z-index: -100;
         }
 
         .main-container {
@@ -19,11 +34,6 @@
             flex-wrap: nowrap;
         }
 
-        video {
-            height: 100%;
-            max-width: 100%;
-        }
-
         .video-container {
             position: relative;
             text-align: center;
@@ -31,8 +41,19 @@
             margin-right: 10px;
         }
 
+        .video-container .hint {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            z-index: -1;
+            font-size: 30px;
+        }
+
         .container {
             display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
         }
 
         .live-container {
@@ -41,14 +62,10 @@
 
         .dj-container {
             width: 20%;
+            display: flex;
             position: relative;
-        }
-
-        span {
-            top: 10px;
-            position: absolute;
-            background: white;
-            left: 10px;
+            flex-direction: column;
+            overflow: auto;
         }
 
         .stream-close {
@@ -59,15 +76,62 @@
 
         .alipay-box {
             text-align: center;
-            bottom: 0;
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%);
             max-width: 100%;
+        }
+
+        .card {
+            box-shadow: 0px 2px 6px 1px #88888888;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-right: 5px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .navbar {
+            height: 47px;
+            padding-left: 30px;
+            padding-right: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e5e5;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .navbar-background {
+            height: 47px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: url('./background.png');
+            background-repeat: no-repeat;
+            filter: blur(4px);
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .navbar div {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar * {
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         img {
             max-width: 100%;
+            max-height: 100%;
         }
     </style>
 </head>
@@ -75,49 +139,56 @@
 <body>
     <script src="https://cdn.bootcss.com/flv.js/1.3.3/flv.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <div class="container">
-        <div class="dj-container">
-            <div class="info">
-                <p>请不要直播NSFW内容。</p>
-                <p>NSFW包括但不限于 色情、残暴内容等。</p>
-                <p id="pigs-count"></p>
+    <script src="/player.js"></script>
+    <div class="background"></div>
+    <div class="main">
+        <div class="navbar">
+
+            <div>
+                <img src="favicon.ico" style="height:40px;width:40px;" />
+                <p>母猪TV-放飞自我的舞台</p>
             </div>
-            <br>
-            <p>DJ列表（点击DJ名切换DJ）</p>
-            <br>
-            <div id="dj-list"></div>
-            <button onclick="closeStream()">只听DJ</button>
-            <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
-            <audio id="audioElement"></audio>
-            <div class="alipay-box">
-                <p>感谢钟佬的66.66元</p>
-                <img src="./alipay.png" />
-                <p>我很可爱 请给我钱</p>
+            <div>
+                <p>登陆</p>
             </div>
         </div>
-        <div class="live-container">
-            <div class="main-container">
-                <div class="video-container">
-                    <video id="videoElement0" controls="controls"></video>
-                    <span id="spanElement0"></span>
-                    <button class="stream-close" onclick="offStream(0)">关闭</button>
+        <div class="navbar-background"></div>
+        <div class="container">
+            <div class="dj-container">
+                <div class="info card">
+                    <p>请不要直播NSFW内容。</p>
+                    <p>NSFW包括但不限于 色情、残暴内容等。</p>
+                    <br>
+                    <p id="pigs-count"></p>
+                </div>
+                <div class="dj card">
+                    <p>DJ列表（点击DJ名切换DJ）</p>
+                    <div id="dj-list"></div>
+                    <button onclick="closeStream()">只听DJ</button>
+                    <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
+                    <audio id="audioElement"></audio>
+                </div>
+                <div class="alipay-box card">
+                    <p>五月赞助名单</p>
+                    <p>感谢残佬的233元</p>
+                    <p>感谢喵的88.88元</p>
+                    <p>感谢yukilo的12.45元</p>
+                    <p>感谢钟佬的66.66元</p>
+                    <img src="./alipay.png" />
+                    <p>我很可爱 请给我钱</p>
                 </div>
             </div>
-            <div style="background:gray" class="sub-container">
-                <div class="video-container" onclick="switchStream(1)">
-                    <video id="videoElement1" controls="controls"></video>
-                    <span id="spanElement1"></span>
-                    <button class="stream-close" onclick="offStream(1)">关闭</button>
+            <div class="live-container">
+                <div class="main-container">
+                    <div class="video-container" id="video-container0">
+                        <p class="hint">台上还没有人，快上台~</p>
+                    </div>
+
                 </div>
-                <div class="video-container" onclick="switchStream(2)">
-                    <video id="videoElement2" controls="controls"></video>
-                    <span id="spanElement2"></span>
-                    <button class="stream-close" onclick="offStream(2)">关闭</button>
-                </div>
-                <div class="video-container" onclick="switchStream(3)">
-                    <video id="videoElement3" controls="controls"></video>
-                    <span id="spanElement3"></span>
-                    <button class="stream-close" onclick="offStream(3)">关闭</button>
+                <div class="sub-container">
+                    <div class="video-container" id="video-container1" onclick="switchStream(1)"></div>
+                    <div class="video-container" id="video-container2" onclick="switchStream(2)"></div>
+                    <div class="video-container" id="video-container3" onclick="switchStream(3)"></div>
                 </div>
             </div>
         </div>
@@ -125,88 +196,67 @@
 
 
 
+
     <script>
-        const titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲']
-        var host = 'live.aigis.me'
+        var host = 'localhost'
         let liveStreams = [];
         let djStreams = [];
+        let players = [];
         let streamClosed = false;
         let usingDJ;
         let pigsCount = 0;
+        // CreatePlayer
+        for (let i = 0; i < 4; i++) {
+            const e = document.getElementById(`video-container${i}`);
+            players.push(new Player(e, i));
+        }
         if (flvjs.isSupported()) {
+            // Stream
             function offStream(i) {
                 if (liveStreams[i]) {
                     removeStream(liveStreams[i].id);
                 }
             }
-            function closeDJ() {
-                if (usingDJ.flvPlayer === undefined) return;
-                document.getElementById('muteDJ').innerHTML = usingDJ.flvPlayer.muted ? '不听DJ' : '要听DJ';
-                usingDJ.flvPlayer.muted = !usingDJ.flvPlayer.muted;
-            }
             function closeStream() {
                 closeStream = true;
                 for (let i = 0; i < 4; i++) {
-                    const stream = liveStreams[i];
-                    if (stream && stream.flvPlayer) {
-                        stream.flvPlayer.pause();
-                        stream.flvPlayer.destroy();
-                        stream.flvPlayer.undefined;
-                        stream.spanElement.innerHTML = '';
-                    }
+                    players[i].changeStream();
                 }
             }
             function switchStream(i) {
                 if (!liveStreams[0]) return;
                 if (!liveStreams[i]) return;
-                if (!liveStreams[i].flvPlayer) return;
                 const mainStreams = liveStreams[0];
                 const subStreams = liveStreams[i];
                 liveStreams[0] = subStreams;
                 liveStreams[i] = mainStreams;
-
-                liveStreams[i].flvPlayer.pause();
-                liveStreams[i].flvPlayer.destroy();
-                liveStreams[i].flvPlayer = undefined;
-                liveStreams[i].spanElement.innerHTML = '';
-
-                liveStreams[0].flvPlayer.pause();
-                liveStreams[0].flvPlayer.destroy();
-                liveStreams[0].flvPlayer = undefined;
-                liveStreams[0].spanElement.innerHTML = '';
-
+                loadStreamsByList();
+            }
+            function addStream(stream) {
+                liveStreams.push(stream);
+                loadStreamsByList();
+            }
+            function removeStream(id) {
+                let index = liveStreams.findIndex((v) => {
+                    return v.id === id;
+                });
+                if (index === -1) return;
+                liveStreams.splice(index, 1);
                 loadStreamsByList();
             }
             function loadStreamsByList(list) {
                 if (streamClosed) return;
                 if (list) liveStreams = list;
                 for (let i = 0; i < 4; i++) {
-                    let stream = liveStreams[i];
-                    if (!stream) break;
-                    if (stream.flvPlayer) continue;
-                    let elementid = 'videoElement' + i;
-                    let videoElement = document.getElementById(elementid);
-                    let spanElement = document.getElementById('spanElement' + i);
-                    let seed = stream.id.charCodeAt(0);
-                    spanElement.innerHTML = titleList[(seed % (titleList.length))] + '-' + stream.StreamPath.slice(6);
-                    let flvPlayer = flvjs.createPlayer({
-                        type: 'flv',
-                        isLive: true,
-                        cors: true,
-                        url: `ws://${host}:8000${stream.StreamPath}.flv`,
-                    })
-
-                    stream.flvPlayer = flvPlayer;
-                    stream.spanElement = spanElement;
-
-                    flvPlayer.attachMediaElement(videoElement);
-                    if (i !== 0) {
-                        flvPlayer.muted = true;
-                        console.log(i, stream);
-                    }
-                    flvPlayer.load();
-                    flvPlayer.play();
+                    players[i].changeStream(liveStreams[i]);
+                    if (i !== 0) players.muted = true;
                 }
+            }
+            // DJ
+            function closeDJ() {
+                if (usingDJ.flvPlayer === undefined) return;
+                document.getElementById('muteDJ').innerHTML = usingDJ.flvPlayer.muted ? '不听DJ' : '要听DJ';
+                usingDJ.flvPlayer.muted = !usingDJ.flvPlayer.muted;
             }
             function genDjList() {
                 const djListElement = document.getElementById('dj-list');
@@ -236,31 +286,7 @@
                 usingDJ = stream;
                 loadDjStreamByList();
             }
-            function addStream(stream) {
-                liveStreams.push(stream);
-                loadStreamsByList();
-            }
-            function removeStream(id) {
-                let index = liveStreams.findIndex((v) => {
-                    return v.id === id;
-                });
-                if (index === -1) return;
-                let stream = liveStreams[index];
-                if (stream.flvPlayer) {
-                    for (let i = 0; i < 4; i++) {
-                        if (liveStreams[i] && liveStreams[i].flvPlayer && i >= index) {
-                            liveStreams[i].flvPlayer.pause();
-                            liveStreams[i].flvPlayer.destroy();
-                            liveStreams[i].flvPlayer = undefined;
-                            liveStreams[i].spanElement.innerHTML = '';
-                        }
-                    }
-                    liveStreams.splice(index, 1);
-                    loadStreamsByList();
-                } else {
-                    liveStreams.splice(index, 1);
-                }
-            }
+
             function loadDjStreamByList(djList) {
                 genDjList();
                 const audioElement = document.getElementById('audioElement');
@@ -304,6 +330,8 @@
                 }
                 if (djStreams.length === 0 && liveStreams[0]) liveStreams[0].flvPlayer.muted = false;
             }
+
+            // WebSocket
             var socket = io();
             socket.on('liveStreams-list', (liveList, djList) => {
                 loadStreamsByList(liveList);
