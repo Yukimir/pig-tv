@@ -172,7 +172,7 @@
                     <audio id="effectElement"></audio>
                 </div>
                 <div class="card" style="text-align: center">
-                    <button onclick="emit('oruga')">止まるんじゃねぇぞ</button>
+                    <button onclick="emit('se','oruga.ogg')">止まるんじゃねぇぞ</button>
                 </div>
                 <div class="alipay-box card">
                     <p>五月赞助名单</p>
@@ -373,8 +373,8 @@
                 pigsCount = pigs;
                 document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
             })
-            socket.on('oruga',()=>{
-
+            socket.on('se',(v)=>{
+                playSE(v);
             })
             socket.emit('request-liveStreams');
         }

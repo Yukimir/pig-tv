@@ -21,6 +21,9 @@ io.on('connection', function (socket) {
     socket.emit('liveStreams-list', liveStreams, djStreams);
     io.emit('update-pig', audienceCount);
   })
+  socket.on('se',(v)=>{
+    io.emit('se',v);
+  })
   socket.on('disconnect', (v) => {
     audienceCount -= 1;
     audienceCount = audienceCount < 0 ? 0 : audienceCount;
