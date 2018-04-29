@@ -310,7 +310,7 @@
                 flvPlayer.attachMediaElement(audioElement);
                 flvPlayer.load();
                 flvPlayer.play();
-                if (liveStreams[0] && liveStreams[0].flvPlayer) liveStreams[0].flvPlayer.muted = true;
+                if (liveStreams[0] && liveStreams[0].flvPlayer) players[0].muted = true;
                 stream.flvPlayer = flvPlayer;
 
                 //刷新DJ列表
@@ -333,7 +333,7 @@
                     djStreams.splice(i, 1);
                     loadDjStreamByList();
                 }
-                if (djStreams.length === 0 && liveStreams[0]) liveStreams[0].flvPlayer.muted = false;
+                if (djStreams.length === 0 && liveStreams[0]) players[0].muted = false;
             }
 
             // WebSocket
