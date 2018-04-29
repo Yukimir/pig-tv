@@ -169,6 +169,10 @@
                     <button onclick="closeStream()">只听DJ</button>
                     <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
                     <audio id="audioElement"></audio>
+                    <audio id="effectElement"></audio>
+                </div>
+                <div class="card" style="text-align: center">
+                    <button onclick="emit('oruga')">止まるんじゃねぇぞ</button>
                 </div>
                 <div class="alipay-box card">
                     <p>五月赞助名单</p>
@@ -179,6 +183,7 @@
                     <p>感谢野猪爸爸的50元</p>
                     <p>感谢水之鸟的15.51元</p>
                     <p>感谢紫苑寺月的50元</p>
+                    <p>感谢NKW的20元</p>
                     <img src="./alipay.png" />
                     <p>我很可爱 请给我钱</p>
                 </div>
@@ -210,6 +215,14 @@
         let streamClosed = false;
         let usingDJ;
         let pigsCount = 0;
+        const effectElement = document.getElementById('effectElement');
+        // play se
+        function playSE(path){
+            if(effectElement.ended === false) return;
+            effectElement.src = path;
+            effectElement.load();
+            effectElement.play();
+        }
         // CreatePlayer
         for (let i = 0; i < 4; i++) {
             const e = document.getElementById(`video-container${i}`);
@@ -335,9 +348,12 @@
                 }
                 if (djStreams.length === 0) players[0].muted = false;
             }
-
+            
             // WebSocket
             var socket = io();
+            function emit(channel,msg){
+                socket.emit(channel,msg);
+            }
             socket.on('liveStreams-list', (liveList, djList) => {
                 loadStreamsByList(liveList);
                 loadDjStreamByList(djList);
@@ -356,6 +372,9 @@
             socket.on('update-pig', (pigs) => {
                 pigsCount = pigs;
                 document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
+            })
+            socket.on('oruga',()=>{
+
             })
             socket.emit('request-liveStreams');
         }
