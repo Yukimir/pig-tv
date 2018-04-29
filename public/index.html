@@ -13,9 +13,9 @@
         }
 
         .background {
-            position:fixed;
-            height:100%;
-            width:100%;
+            position: fixed;
+            height: 100%;
+            width: 100%;
             background: url('./background.png');
             background-repeat: no-repeat;
             opacity: 0.2;
@@ -58,7 +58,7 @@
         .live-container {
             width: 80%;
             margin-top: 10px;
-            display:flex;
+            display: flex;
             flex-direction: column;
         }
 
@@ -94,7 +94,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            height:100%;
+            height: 100%;
         }
 
         .navbar {
@@ -148,7 +148,7 @@
 
             <div>
                 <img src="favicon.ico" style="height:40px;width:40px;" />
-                <p>母猪TV-放飞自我的舞台</p>
+                <p>母猪TV-毁酱生日快乐</p>
             </div>
             <div>
                 <p>登入</p>
@@ -173,6 +173,7 @@
                 </div>
                 <div class="card" style="text-align: center">
                     <button onclick="emit('se','oruga.ogg')">止まるんじゃねぇぞ</button>
+                    <button onclick="muteSE()">申し訳ないが淫夢厨はNG</button>
                 </div>
                 <div class="alipay-box card">
                     <p>五月赞助名单</p>
@@ -217,11 +218,16 @@
         let pigsCount = 0;
         const effectElement = document.getElementById('effectElement');
         // play se
-        function playSE(path){
-            if(effectElement.src !== '' && effectElement.ended === false) return;
-            effectElement.src = path;
-            effectElement.load();
+        function playSE(path) {
+            if (effectElement.src !== '' && effectElement.ended === false) return;
+            if (effectElement.src !== path) {
+                effectElement.src = path;
+                effectElement.load();
+            }
             effectElement.play();
+        }
+        function muteSE() {
+            effectElement.muted = true;
         }
         // CreatePlayer
         for (let i = 0; i < 4; i++) {
@@ -348,11 +354,11 @@
                 }
                 if (djStreams.length === 0) players[0].muted = false;
             }
-            
+
             // WebSocket
             var socket = io();
-            function emit(channel,msg){
-                socket.emit(channel,msg);
+            function emit(channel, msg) {
+                socket.emit(channel, msg);
             }
             socket.on('liveStreams-list', (liveList, djList) => {
                 loadStreamsByList(liveList);
@@ -373,7 +379,7 @@
                 pigsCount = pigs;
                 document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
             })
-            socket.on('se',(v)=>{
+            socket.on('se', (v) => {
                 playSE(v);
             })
             socket.emit('request-liveStreams');
