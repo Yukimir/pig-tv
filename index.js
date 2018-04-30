@@ -20,7 +20,7 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
   if (err) return;
   body = JSON.parse(body);
   let group = body.find((v => {
-    return v.uin === 630035378;
+    return v.uin === 111438162;
   }));
   groupID = group.id;
 });
