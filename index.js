@@ -8,7 +8,7 @@ const request = require('request');
 const liveStreams = [];
 const djStreams = [];
 let audienceCount = 0;
-let groupID = '';
+let groupID = 0;
 class Stream {
   constructor(id, StreamPath) {
     this.id = id;
@@ -22,8 +22,14 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
   let group = body.find((v => {
     return v.uin === 630035378;
   }));
-  console.log(group.id);
+  groupID = group.id;
 });
+function emitMessage(message) {
+  if(groupID === 0) return;
+  let url = `http://127.0.0.1:5000/openqq/send_group_message?id=${groupID.toString()}&content=${encodeURIComponent(message)}`
+  console.log(url);
+  request(url);
+}
 
 app.use(express.static('public'));
 
@@ -70,6 +76,7 @@ nms.on('postPublish', (id, StreamPath, args) => {
   } else {
     liveStreams.push(stream);
     io.emit('post-publish', stream);
+    // qqbot
   }
 
 });
