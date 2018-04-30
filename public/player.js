@@ -1,5 +1,5 @@
 class Player {
-    constructor(element,i) {
+    constructor(element, i) {
         this.titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲', '骑空士', '德云王', '决斗者', '截胡专家']
         this.attachElement = element;
         this.stream = undefined;
@@ -53,7 +53,7 @@ class Player {
         flvPlayer.attachMediaElement(this.videoElement);
         flvPlayer.load();
         flvPlayer.play();
-        if(this.muted) flvPlayer.muted = true;
+        if (this.muted) flvPlayer.muted = true;
     }
     changeTags() {
         let seed = this.stream.id.charCodeAt(0);
@@ -94,7 +94,7 @@ class Player {
         const close = document.createElement('i');
         close.className = "fa fa-close";
         close.setAttribute('aria-hidden', 'true');
-        close.addEventListener('click',()=>{
+        close.addEventListener('click', () => {
             offStream(this.playerNo);
         });
 

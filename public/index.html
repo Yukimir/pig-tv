@@ -277,9 +277,15 @@
             function loadStreamsByList(list) {
                 if (streamClosed) return;
                 if (list) liveStreams = list;
+                count = 0;
                 for (let i = 0; i < 4; i++) {
-                    players[i].changeStream(liveStreams[i]);
+                    while (count < liveStreams.length) {
+                        if(liveStreams[count] && liveStreams[count].StreamPath.slice(6) !== '') break;
+                        count++;
+                    }
+                    players[i].changeStream(liveStreams[count]);
                     if (i !== 0) players[i].muted = true;
+                    count++;
                 }
             }
             // DJ
