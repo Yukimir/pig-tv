@@ -21,6 +21,7 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
   let group = body.find((v => {
     return v.uin === 630035378;
   }));
+  console.log(group.id);
 });
 
 app.use(express.static('public'));
