@@ -16,8 +16,11 @@ class Stream {
   }
 }
 // qqbot
-request('http://127.0.0.1:5000/openqq/get_group_basic_info',(err,res,body)=>{
-  console.log(body);
+request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) => {
+  if (err) return;
+  let group = body.find((v => {
+    return v.uin === 630035378;
+  }));
 });
 
 app.use(express.static('public'));
@@ -28,8 +31,8 @@ io.on('connection', function (socket) {
     socket.emit('liveStreams-list', liveStreams, djStreams);
     io.emit('update-pig', audienceCount);
   })
-  socket.on('se',(v)=>{
-    io.emit('se',v);
+  socket.on('se', (v) => {
+    io.emit('se', v);
   })
   socket.on('disconnect', (v) => {
     audienceCount -= 1;
