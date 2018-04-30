@@ -23,6 +23,7 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
     return v.uin === 630035378;
   }));
   groupID = group.id;
+  emitMessage('测试测试');
 });
 function emitMessage(message) {
   if(groupID === 0) return;
