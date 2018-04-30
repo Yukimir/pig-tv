@@ -23,12 +23,10 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
     return v.uin === 630035378;
   }));
   groupID = group.id;
-  emitMessage('测试测试');
 });
 function emitMessage(message) {
   if(groupID === 0) return;
   let url = `http://127.0.0.1:5000/openqq/send_group_message?id=${groupID.toString()}&content=${encodeURIComponent(message)}`
-  console.log(url);
   request(url);
 }
 
@@ -78,6 +76,8 @@ nms.on('postPublish', (id, StreamPath, args) => {
     liveStreams.push(stream);
     io.emit('post-publish', stream);
     // qqbot
+    let message = `母猪${stream.StreamPath.slice(6)}走上了舞台，快来[http://live.aigis.me:3000]围观它~`;
+    emitMessage(message);
   }
 
 });
