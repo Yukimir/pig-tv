@@ -16,8 +16,8 @@ class Stream {
   }
 }
 // qqbot
-request('http://127.0.0.1:5000/openqq/get_group_basic_info',(res)=>{
-  console.log(res);
+request('http://127.0.0.1:5000/openqq/get_group_basic_info',(err,res,body)=>{
+  console.log(body);
 });
 
 app.use(express.static('public'));
