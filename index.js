@@ -3,16 +3,23 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const request = require('reqeust');
 
 const liveStreams = [];
 const djStreams = [];
 let audienceCount = 0;
+let groupID = '';
 class Stream {
   constructor(id, StreamPath) {
     this.id = id;
     this.StreamPath = StreamPath;
   }
 }
+// qqbot
+request('http://127.0.0.1:5000/openqq/get_group_basic_info',(res)=>{
+  console.log(res);
+});
+
 app.use(express.static('public'));
 
 io.on('connection', function (socket) {
