@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "node-media-server": "git+https://github.com/Yukimir/node-media-server.git",
+    "request": "^2.85.0",
     "socket.io": "^2.1.0"
   }
 }
