@@ -238,8 +238,11 @@
         // CreatePlayer
         for (let i = 0; i < 4; i++) {
             const e = document.getElementById(`video-container${i}`);
+            const player = new Player(e, i);
+            player.onSwitchBtnClick = switchStream;
             players.push(new Player(e, i));
         }
+
         if (flvjs.isSupported()) {
             // Stream
             function offStream(i) {
@@ -280,7 +283,7 @@
                 count = 0;
                 for (let i = 0; i < 4; i++) {
                     while (count < liveStreams.length) {
-                        if(liveStreams[count] && liveStreams[count].StreamPath.slice(6) !== '') break;
+                        if (liveStreams[count] && liveStreams[count].StreamPath.slice(6) !== '') break;
                         count++;
                     }
                     players[i].changeStream(liveStreams[count]);

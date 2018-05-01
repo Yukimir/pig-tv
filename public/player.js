@@ -10,6 +10,7 @@ class Player {
         this.spanElement.className = 'player-span';
         this.attachElement.appendChild(this.videoElement);
         this.attachElement.appendChild(this.spanElement);
+        this.onSwitchBtnClick = null;
         this.playerNo = i;
 
         // 制作控制条
@@ -97,9 +98,15 @@ class Player {
         close.addEventListener('click', () => {
             offStream(this.playerNo);
         });
-
+        const switcher = document.createElement('i');
+        switcher.className = "fa fa-window-maximize";
+        switcher.setAttribute('aria-hidden', 'true');
+        switcher.addEventListener('click', () => {
+            this.onSwitchBtnClick(this.playerNo);
+        })
         left.appendChild(pause);
         left.appendChild(refresh);
+        if (this.playerNo !== 0) left.appendChild(switcher);
         left.appendChild(close);
         controller.appendChild(left);
 
