@@ -240,7 +240,7 @@
             const e = document.getElementById(`video-container${i}`);
             const player = new Player(e, i);
             player.onSwitchBtnClick = switchStream;
-            players.push(new Player(e, i));
+            players.push(player);
         }
 
         if (flvjs.isSupported()) {
