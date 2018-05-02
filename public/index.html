@@ -129,6 +129,7 @@
         .navbar * {
             margin-left: 10px;
             margin-right: 10px;
+            flex-shrink: 0;
         }
 
         img {
@@ -148,7 +149,7 @@
 
             <div>
                 <img src="favicon.ico" style="height:40px;width:40px;" />
-                <p>母猪TV-毁酱生日快乐</p>
+                <p>母猪TV-放飞自我的舞台</p>
             </div>
             <div>
                 <p>登入</p>
@@ -166,8 +167,10 @@
                 <div class="dj card">
                     <p>DJ列表（点击DJ名切换DJ）</p>
                     <div id="dj-list"></div>
-                    <button onclick="closeStream()">只听DJ</button>
-                    <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
+                    <div>
+                        <button onclick="closeStream()">只听DJ</button>
+                        <button onclick="closeDJ()" id="muteDJ">不听DJ</button>
+                    </div>
                     <audio id="audioElement"></audio>
                     <audio id="effectElement"></audio>
                 </div>

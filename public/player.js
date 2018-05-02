@@ -147,9 +147,11 @@ class Player {
         return controller;
     }
     showController() {
+        if(!this.controller) return;
         this.controller.classList.remove('none');
     }
     hideController() {
+        if(!this.controller) return;
         this.controller.classList.add('none');
     }
 }
