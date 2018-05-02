@@ -102,7 +102,7 @@ class Player {
         switcher.className = "fa fa-window-maximize";
         switcher.setAttribute('aria-hidden', 'true');
         switcher.addEventListener('click', () => {
-            this.onSwitchBtnClick(this.playerNo);
+            if (this.onSwitchBtnClick) this.onSwitchBtnClick(this.playerNo);
         })
         left.appendChild(pause);
         left.appendChild(refresh);
