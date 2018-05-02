@@ -88,7 +88,7 @@ class Player {
                 pause.className = 'fa fa-play';
             }
         })
-        this.controller.pause = pause;
+        controller.pause = pause;
         const refresh = document.createElement('i');
         refresh.className = "fa fa-refresh";
         refresh.addEventListener('click', () => {
