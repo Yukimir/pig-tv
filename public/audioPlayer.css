@@ -26,12 +26,12 @@
 .dj-container .dj-name {
     margin-left: 0;
     margin-right: 0;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 .audio-player .dj-list {
     position: absolute;
-    top: 4.5em;
+    top: 4em;
     left: -10px;
     margin-right: auto;
     margin-left: auto;
