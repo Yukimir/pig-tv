@@ -239,6 +239,7 @@
         for (let i = 0; i < 4; i++) {
             const e = document.getElementById(`video-container${i}`);
             const player = new Player(e, i);
+            console.log(switchStream);
             player.onSwitchBtnClick = switchStream;
             players.push(player);
         }
