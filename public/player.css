@@ -20,8 +20,10 @@
     z-index: 1000;
     align-items: center;
     transition: opacity 0.5s;
-    opacity: 0;
     box-shadow: 0px -2px 3px 0px #88888888;
+}
+.player-controller .hidden{
+    opacity: 0;
 }
 
 .player-controller i {

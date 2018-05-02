@@ -14,14 +14,12 @@ class Player {
         this.playerNo = i;
 
         // 制作控制条
+        this.controller = this.createController();
+        this.attachElement.appendChild(this.controller);
         if (detectMobile()) {
-            this.videoElement.controls = 'controls';
-            this.attachElement.addEventListener('click',()=>{
-                this.onSwitchBtnClick(this.playerNo);
-            })
-        } else {
-            this.controller = this.createController();
-            this.attachElement.appendChild(this.controller);
+            this.controller.classList.remove('hidden');
+            this.videoElement.pause();
+            this.controller.pause.className = 'fa fa-play';
         }
     }
     changeStream(stream, refresh) {
@@ -56,7 +54,7 @@ class Player {
         this.flvPlayer = flvPlayer;
         flvPlayer.attachMediaElement(this.videoElement);
         flvPlayer.load();
-        flvPlayer.play();
+        if (!detectMobile()) flvPlayer.play();
         if (this.muted) flvPlayer.muted = true;
     }
     changeTags() {
@@ -68,7 +66,7 @@ class Player {
     }
     set muted(v) {
         this.videoElement.muted = v;
-        if(!this.controller) return;
+        if (!this.controller) return;
         if (v) this.controller.volumeIcon.className = 'fa fa-volume-off';
         else this.controller.volumeIcon.className = 'fa fa-volume-down';
     }
@@ -90,6 +88,7 @@ class Player {
                 pause.className = 'fa fa-play';
             }
         })
+        this.controller.pause = pause;
         const refresh = document.createElement('i');
         refresh.className = "fa fa-refresh";
         refresh.addEventListener('click', () => {
@@ -151,11 +150,11 @@ class Player {
         return controller;
     }
     showController() {
-        if(!this.controller) return;
+        if (!this.controller) return;
         this.controller.classList.remove('none');
     }
     hideController() {
-        if(!this.controller) return;
+        if (!this.controller) return;
         this.controller.classList.add('none');
     }
 }
