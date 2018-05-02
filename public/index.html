@@ -28,7 +28,7 @@
         </div>
         <div class="navbar-background"></div>
         <div class="container">
-            <div class="left-container">
+            <div class="left-container" id="left">
                 <div class="info card">
                     <p>请不要直播NSFW内容。</p>
                     <p>NSFW包括但不限于 色情、残暴内容等。</p>
@@ -61,6 +61,7 @@
                     <p>打多打少是个缘</p>
                 </div>
             </div>
+            <div id="hide-button" class="hide-button" onclick="hideOrShowLeft()"></div>
             <div class="live-container">
                 <div class="main-container">
                     <div class="video-container" id="video-container0">
@@ -101,7 +102,14 @@
         function muteSE() {
             effectElement.muted = true;
         }
-
+        function hideOrShowLeft() {
+            const left = document.getElementById('left');
+            if (left.classList.contains('left-hidden')) {
+                left.classList.remove('left-hidden');
+            } else {
+                left.classList.add('left-hidden');
+            }
+        }
         if (flvjs.isSupported()) {
             // Stream
             function offStream(i) {
