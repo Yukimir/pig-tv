@@ -18,8 +18,8 @@ class Player {
         this.attachElement.appendChild(this.controller);
         if (detectMobile()) {
             this.controller.classList.remove('hidden');
-            this.videoElement.pause();
-            this.controller.pause.className = 'fa fa-play';
+            // this.videoElement.pause();
+            // this.controller.pause.className = 'fa fa-play';
         }
     }
     changeStream(stream, refresh) {
