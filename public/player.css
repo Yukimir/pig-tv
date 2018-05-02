@@ -22,7 +22,7 @@
     transition: opacity 0.5s;
     box-shadow: 0px -2px 3px 0px #88888888;
 }
-.player-controller .hidden{
+.video-container .hidden{
     opacity: 0;
 }
 
