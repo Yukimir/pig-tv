@@ -106,7 +106,7 @@
             align-items: center;
             border-bottom: 1px solid #e5e5e5;
             background-color: rgba(255, 255, 255, 0.7);
-            flex-shrink:0;
+            flex-shrink: 0;
         }
 
         .navbar-background {
@@ -242,6 +242,13 @@
         }
 
         if (flvjs.isSupported()) {
+            // FullScreen
+            if (detectMobile()) {
+                const doc = window.document;
+                const docEl = doc.documentElement;
+                const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+                requestFullScreen.call(docEl);
+            }
             // Stream
             function offStream(i) {
                 if (liveStreams[i]) {
