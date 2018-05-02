@@ -4,7 +4,7 @@ class AudioPlayer {
         this.streamList = [];
         this.stream;
 
-        this.attachElement.className = "audio-player hidden";
+        this.attachElement.className = "audio-player audio-player-hidden";
         this.createPlayer();
     }
     createPlayer() {
@@ -151,9 +151,9 @@ class AudioPlayer {
         }
     }
     hidePlayer(){
-        this.attachElement.classList.add('hidden');
+        this.attachElement.classList.add('audio-player-hidden');
     }
     showPlayer(){
-        this.attachElement.classList.remove('hidden');
+        this.attachElement.classList.remove('audio-player-hidden');
     }
 }
