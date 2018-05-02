@@ -235,14 +235,6 @@
         function muteSE() {
             effectElement.muted = true;
         }
-        // CreatePlayer
-        for (let i = 0; i < 4; i++) {
-            const e = document.getElementById(`video-container${i}`);
-            const player = new Player(e, i);
-            console.log(switchStream);
-            player.onSwitchBtnClick = switchStream;
-            players.push(player);
-        }
 
         if (flvjs.isSupported()) {
             // Stream
@@ -370,7 +362,14 @@
                 }
                 if (djStreams.length === 0) players[0].muted = false;
             }
-
+            
+            // CreatePlayer
+            for (let i = 0; i < 4; i++) {
+                const e = document.getElementById(`video-container${i}`);
+                const player = new Player(e, i);
+                player.onSwitchBtnClick = switchStream;
+                players.push(player);
+            }
             // WebSocket
             var socket = io();
             function emit(channel, msg) {
