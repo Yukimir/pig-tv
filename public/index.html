@@ -62,14 +62,7 @@
                 </div>
             </div>
             <div id="hide-button" class="hide-button" onclick="hideOrShowLeft()">
-                <div>
-                    <span>-</span>
-                    <span>-</span>
-                    <span>-</span>
-                    <span>-</span>
-                    <span>-</span>
-                    <span>-</span>
-                </div>
+                <div class="arrow" id="botton-arrow"></div>
             </div>
             <div class="live-container">
                 <div class="main-container">
@@ -113,10 +106,13 @@
         }
         function hideOrShowLeft() {
             const left = document.getElementById('left');
+            const botton = document.getElementById('botton-arrow')
             if (left.classList.contains('left-hidden')) {
                 left.classList.remove('left-hidden');
+                botton.classList.remove('arrow-reverse');
             } else {
                 left.classList.add('left-hidden');
+                botton.classList.add('arrow-reverse');
             }
         }
         if (flvjs.isSupported()) {
