@@ -154,6 +154,7 @@
             </div>
             <div>
                 <p>登入</p>
+                <i class="fa fa-expand" aria-hidden="true" onclick="toggleFullScreen()"></i>
             </div>
         </div>
         <div class="navbar-background"></div>
@@ -242,13 +243,6 @@
         }
 
         if (flvjs.isSupported()) {
-            // FullScreen
-            if (detectMobile()) {
-                const doc = window.document;
-                const docEl = doc.documentElement;
-                const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-                requestFullScreen.call(docEl);
-            }
             // Stream
             function offStream(i) {
                 if (liveStreams[i]) {
@@ -410,6 +404,20 @@
                 playSE(v);
             })
             socket.emit('request-liveStreams');
+        }
+        function toggleFullScreen() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+
+            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                requestFullScreen.call(docEl);
+            }
+            else {
+                cancelFullScreen.call(doc);
+            }
         }
     </script>
 </body>
