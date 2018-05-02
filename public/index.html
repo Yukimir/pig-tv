@@ -226,7 +226,7 @@
         const effectElement = document.getElementById('effectElement');
         // play se
         function playSE(path) {
-            if (effectElement.src !== '' && effectElement.ended === false) return;
+            if (effectElement.src !== '' && (effectElement.ended === false && effectElement.paused === false)) return;
             if (effectElement.src !== path) {
                 effectElement.src = path;
                 effectElement.load();
