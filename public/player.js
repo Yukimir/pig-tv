@@ -65,6 +65,7 @@ class Player {
     }
     set muted(v) {
         this.videoElement.muted = v;
+        if(!this.controller) return;
         if (v) this.controller.volumeIcon.className = 'fa fa-volume-off';
         else this.controller.volumeIcon.className = 'fa fa-volume-down';
     }
