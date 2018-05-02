@@ -23,6 +23,8 @@ request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) =>
     return v.markname !== 'aigisboy';
   }));
   groupID = group.id;
+  console.log(groupID);
+  emitMessage('角斗场复活了，欢迎各位母猪上台');
 });
 function emitMessage(message) {
   if (groupID === 0) return;
