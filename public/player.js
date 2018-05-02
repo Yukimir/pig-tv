@@ -16,6 +16,9 @@ class Player {
         // 制作控制条
         if (detectMobile()) {
             this.videoElement.controls = 'controls';
+            this.attachElement.addEventListener('click',()=>{
+                this.onSwitchBtnClick(this.playerNo);
+            })
         } else {
             this.controller = this.createController();
             this.attachElement.appendChild(this.controller);
