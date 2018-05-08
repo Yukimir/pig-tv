@@ -16,3 +16,4 @@ app-builds
 mod
 ./plugins
 config.conf
+package-lock.json

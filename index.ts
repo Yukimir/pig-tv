@@ -1,37 +1,31 @@
 const NodeMediaServer = require('node-media-server');
-const express = require('express');
+import { cqsocket } from 'node-cqsocket'
+import * as http from 'http'
+import * as sio from 'socket.io'
+import * as express from 'express'
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const request = require('request');
+const server = http.createServer(app);
+const io = sio(server);
 
 const liveStreams = [];
 const djStreams = [];
 let audienceCount = 0;
-let groupID = 0;
+let groupID = 111438162;
+
 class Stream {
+  id:string;
+  StreamPath:string;
   constructor(id, StreamPath) {
     this.id = id;
     this.StreamPath = StreamPath;
   }
 }
-// qqbot
-request('http://127.0.0.1:5000/openqq/get_group_basic_info', (err, res, body) => {
-  if (err) return;
-  body = JSON.parse(body);
-  let group = body.find((v => {
-    return v.markname !== 'aigisboy';
-  }));
-  groupID = group.id;
-  console.log(groupID);
-  emitMessage('角斗场复活了，欢迎各位母猪上台');
-});
+
+const cq = new cqsocket('127.0.0.1', 9001);
+
 function emitMessage(message) {
   if (groupID === 0) return;
-  let url = `http://127.0.0.1:5000/openqq/send_group_message?id=${groupID.toString()}&content=${encodeURIComponent(message)}`
-  request(url, (err, res, body) => {
-    console.log(body);
-  });
+
 }
 
 app.use(express.static('public'));
@@ -52,7 +46,7 @@ io.on('connection', function (socket) {
   })
 })
 
-http.listen(3000, () => console.log('Example app listening on port 3000!'));
+server.listen(3000, () => console.log('Example app listening on port 3000!'));
 
 const config = {
   rtmp: {
