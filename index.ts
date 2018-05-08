@@ -13,8 +13,8 @@ let audienceCount = 0;
 let groupID = 111438162;
 
 class Stream {
-  id:string;
-  StreamPath:string;
+  id: string;
+  StreamPath: string;
   constructor(id, StreamPath) {
     this.id = id;
     this.StreamPath = StreamPath;
@@ -22,10 +22,11 @@ class Stream {
 }
 
 const cq = new cqsocket('127.0.0.1', 9001);
+cq.listen(9002);
 
 function emitMessage(message) {
   if (groupID === 0) return;
-
+  cq.SendGroupMessage(groupID, message);
 }
 
 app.use(express.static('public'));

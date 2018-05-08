@@ -10,8 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
+    "node-cqsocket": "git+https://github.com/Yukimir/node-cqsocket.git",
     "node-media-server": "git+https://github.com/Yukimir/node-media-server.git",
     "request": "^2.85.0",
     "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/node": "^10.0.4",
+    "@types/socket.io": "^1.4.33"
   }
 }
