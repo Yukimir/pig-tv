@@ -2,13 +2,21 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "lib": ["es5", "es6", "dom"],
-        "noImplicitAny": true,
+        "lib": [
+            "es5",
+            "es6",
+            "dom"
+        ],
         "removeComments": true,
         "preserveConstEnums": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
     },
     "files": [
         "index.ts"
+    ],
+    "exclude": [
+        "node_modules"
     ]
 }

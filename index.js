@@ -20,6 +20,12 @@ class Stream {
 }
 const cq = new node_cqsocket_1.cqsocket('127.0.0.1', 9001);
 cq.listen(9002);
+cq.on('GroupMessage', (event) => {
+    if (event.ID === groupID) {
+        if (Math.random() < 0.05)
+            cq.SendGroupMessage(event.ID, event.message);
+    }
+});
 function emitMessage(message) {
     if (groupID === 0)
         return;
