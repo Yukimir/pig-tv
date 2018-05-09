@@ -22,13 +22,19 @@ class Stream {
 }
 
 const cq = new cqsocket('127.0.0.1', 9001);
-cq.listen(9002);
 cq.on('GroupMessage', (event) => {
   if (event.ID === groupID) {
     if (Math.random() < 0.03)
       cq.SendGroupMessage(event.ID, event.message);
   }
 })
+cq.on('PrivateMessage', (event) => {
+  if (event.qq === 2745927718) {
+    emitMessage(event.message);
+  }
+})
+cq.listen(9002);
+
 
 function emitMessage(message) {
   if (groupID === 0) return;
