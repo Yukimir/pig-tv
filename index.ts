@@ -21,8 +21,8 @@ class Stream {
   }
 }
 
-const cq = new cqsocket('127.0.0.1', 9001);
-cq.listen(9002);
+const cq = new cqsocket('127.0.0.1', 60000);
+cq.listen(60001);
 cq.on('GroupMessage', (event) => {
   console.log(event);
   if (event.ID === groupID) {
