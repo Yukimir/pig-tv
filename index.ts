@@ -24,15 +24,13 @@ class Stream {
 const cq = new cqsocket('127.0.0.1', 60000);
 cq.listen(60001);
 cq.on('GroupMessage', (event) => {
-  console.log(event);
   if (event.ID === groupID) {
     if (Math.random() < 0.03)
       cq.SendGroupMessage(event.ID, event.message);
   }
 })
 cq.on('PrivateMessage', (event) => {
-  console.log(event);
-  cq.SendPrivateMessage(event.qq, event.message);
+  emitMessage(event.message);
 })
 
 
