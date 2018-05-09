@@ -31,6 +31,7 @@ cq.on('GroupMessage', (event) => {
 })
 cq.on('PrivateMessage', (event) => {
   console.log(event);
+  cq.SendPrivateMessage(event.qq, event.message);
 })
 cq.listen(9002);
 
