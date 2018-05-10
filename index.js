@@ -27,7 +27,8 @@ cq.on('GroupMessage', (event) => {
     }
 });
 cq.on('PrivateMessage', (event) => {
-    emitMessage(event.message);
+    if (event.qq === 2745927718)
+        emitMessage(event.message);
 });
 function emitMessage(message) {
     if (groupID === 0)
