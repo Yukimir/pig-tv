@@ -34,7 +34,6 @@ cq.on('PrivateMessage', (event) => {
   if (event.qq === 2745927718) emitMessage(event.message);
 })
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(express.static('public'));
 
 app.post('/api/streams', (req, res) => {

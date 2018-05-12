@@ -32,7 +32,6 @@ cq.on('PrivateMessage', (event) => {
         emitMessage(event.message);
 });
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(express.static('public'));
 app.post('/api/streams', (req, res) => {
     console.log(req.body);
