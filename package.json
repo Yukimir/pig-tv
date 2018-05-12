@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "node-cqsocket": "git+https://github.com/Yukimir/node-cqsocket.git",
     "node-media-server": "git+https://github.com/Yukimir/node-media-server.git",

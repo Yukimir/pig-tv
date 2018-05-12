@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const NodeMediaServer = require('node-media-server');
+const bodyParser = require('body-parser');
 const node_cqsocket_1 = require("node-cqsocket");
 const http = require("http");
 const sio = require("socket.io");
@@ -30,11 +31,8 @@ cq.on('PrivateMessage', (event) => {
     if (event.qq === 2745927718)
         emitMessage(event.message);
 });
-function emitMessage(message) {
-    if (groupID === 0)
-        return;
-    cq.SendGroupMessage(groupID, message);
-}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(express.static('public'));
 app.post('/api/streams', (req, res) => {
     console.log(req.body);
@@ -55,6 +53,11 @@ io.on('connection', function (socket) {
     });
 });
 server.listen(3000, () => console.log('Example app listening on port 3000!'));
+function emitMessage(message) {
+    if (groupID === 0)
+        return;
+    cq.SendGroupMessage(groupID, message);
+}
 const config = {
     rtmp: {
         port: 1935,
