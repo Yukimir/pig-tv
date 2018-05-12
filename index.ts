@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // RTMP-server callback
-app.post('/api/streams', (req, res) => {
+app.post('/api/streams', async (req, res) => {
   res.statusCode = 200;
   res.send('0');
 
@@ -54,8 +54,8 @@ app.post('/api/streams', (req, res) => {
   const id = crypto.createHash('md5').update(body['client_id'].toString()).digest('hex');
   const StreamPath = `/${body['app']}/${body['stream']}`;
   const stream = new Stream(id, StreamPath);
-  console.log(stream);
   if (body['action'] === 'on_publish') {
+    // 开始推流
     if (StreamPath.indexOf('dj-') === 6) {
       djStreams.push(stream);
       io.emit('dj-post-publish', stream);
@@ -67,7 +67,10 @@ app.post('/api/streams', (req, res) => {
       emitMessage(message);
     }
   }
+
+
   if (body['action'] === 'on_unpublish') {
+    // 结束推流
     let i = liveStreams.findIndex((v) => {
       return v.id === id;
     })
@@ -79,6 +82,14 @@ app.post('/api/streams', (req, res) => {
     if (i !== -1) djStreams.splice(i, 1);
     io.emit('done-publish', id);
   }
+
+  // 如果要增加QQ验证的话
+  // 需要做数据库的读取
+  // 用户在通过QQ登陆之后，会获得唯一uid（ObjectID）
+  // 用户可以设置昵称和密码，密码会+qq号和时间转换为md5在服务器保存
+  // 用户通过这个md5作为path来进行推流
+  // {qq,nickname,sign} <- 数据model
+  // 大概就是这样，狗屎QQ还要审核，傻逼
 })
 
 // socket-io

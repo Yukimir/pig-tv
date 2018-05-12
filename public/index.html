@@ -85,7 +85,8 @@
 
 
     <script>
-        var host = 'live2.aigis.me'
+        let ran = Math.floor((Math.random() * 1) + 1);
+        var host = `live${ran}.aigis.me`
         let liveStreams = [];
         let djStreams = [];
         let players = [];
