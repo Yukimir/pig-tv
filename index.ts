@@ -41,6 +41,11 @@ function emitMessage(message) {
 
 app.use(express.static('public'));
 
+app.post('/api/stream', (req, res) => {
+  console.log(req.body);
+})
+
+
 io.on('connection', function (socket) {
   audienceCount += 1;
   socket.on('request-liveStreams', (v) => {
@@ -102,5 +107,3 @@ nms.on('donePublish', (id, StreamPath, args) => {
   if (i !== -1) djStreams.splice(i, 1);
   io.emit('done-publish', id);
 });
-
-nms.run();

@@ -36,6 +36,9 @@ function emitMessage(message) {
     cq.SendGroupMessage(groupID, message);
 }
 app.use(express.static('public'));
+app.post('/api/stream', (req, res) => {
+    console.log(req.body);
+});
 io.on('connection', function (socket) {
     audienceCount += 1;
     socket.on('request-liveStreams', (v) => {
@@ -94,5 +97,4 @@ nms.on('donePublish', (id, StreamPath, args) => {
         djStreams.splice(i, 1);
     io.emit('done-publish', id);
 });
-nms.run();
 //# sourceMappingURL=index.js.map
