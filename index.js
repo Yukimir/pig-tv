@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const NodeMediaServer = require('node-media-server');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const node_cqsocket_1 = require("node-cqsocket");
 const http = require("http");
 const sio = require("socket.io");
@@ -20,6 +21,11 @@ class Stream {
     }
 }
 const cq = new node_cqsocket_1.cqsocket('127.0.0.1', 60000);
+function emitMessage(message) {
+    if (groupID === 0)
+        return;
+    cq.SendGroupMessage(groupID, message);
+}
 cq.listen(60001);
 cq.on('GroupMessage', (event) => {
     if (event.ID === groupID) {
@@ -34,9 +40,38 @@ cq.on('PrivateMessage', (event) => {
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.post('/api/streams', (req, res) => {
-    console.log(req.body);
     res.statusCode = 200;
     res.send('0');
+    const body = req.body;
+    const id = crypto.createHash('md5').update(body['client_id']).digest('hex');
+    const StreamPath = `/${body['app']}/${body['stream']}`;
+    const stream = new Stream(id, StreamPath);
+    console.log(stream);
+    if (body['action'] === 'on_publish') {
+        if (StreamPath.indexOf('dj-') === 6) {
+            djStreams.push(stream);
+            io.emit('dj-post-publish', stream);
+        }
+        else {
+            liveStreams.push(stream);
+            io.emit('post-publish', stream);
+            let message = `母猪${stream.StreamPath.slice(6)}走上了舞台，快来[http://live.aigis.me:3000]围观它~`;
+            emitMessage(message);
+        }
+    }
+    if (body['action'] === 'on_unpublish') {
+        let i = liveStreams.findIndex((v) => {
+            return v.id === id;
+        });
+        if (i !== -1)
+            liveStreams.splice(i, 1);
+        i = djStreams.findIndex((v) => {
+            return v.id === id;
+        });
+        if (i !== -1)
+            djStreams.splice(i, 1);
+        io.emit('done-publish', id);
+    }
 });
 io.on('connection', function (socket) {
     audienceCount += 1;
@@ -54,51 +89,4 @@ io.on('connection', function (socket) {
     });
 });
 server.listen(3000, () => console.log('Example app listening on port 3000!'));
-function emitMessage(message) {
-    if (groupID === 0)
-        return;
-    cq.SendGroupMessage(groupID, message);
-}
-const config = {
-    rtmp: {
-        port: 1935,
-        chunk_size: 60000,
-        gop_cache: true,
-        ping: 60,
-        ping_timeout: 30
-    },
-    http: {
-        port: 8000,
-        allow_origin: '*'
-    }
-};
-const nms = new NodeMediaServer(config);
-nms.on('postPublish', (id, StreamPath, args) => {
-    let stream = new Stream(id, StreamPath);
-    console.log(StreamPath.indexOf('dj'));
-    if (StreamPath.indexOf('dj-') === 6) {
-        djStreams.push(stream);
-        io.emit('dj-post-publish', stream);
-    }
-    else {
-        liveStreams.push(stream);
-        io.emit('post-publish', stream);
-        let message = `母猪${stream.StreamPath.slice(6)}走上了舞台，快来[http://live.aigis.me:3000]围观它~`;
-        console.log(message);
-        emitMessage(message);
-    }
-});
-nms.on('donePublish', (id, StreamPath, args) => {
-    let i = liveStreams.findIndex((v) => {
-        return v.id === id;
-    });
-    if (i !== -1)
-        liveStreams.splice(i, 1);
-    i = djStreams.findIndex((v) => {
-        return v.id === id;
-    });
-    if (i !== -1)
-        djStreams.splice(i, 1);
-    io.emit('done-publish', id);
-});
 //# sourceMappingURL=index.js.map
