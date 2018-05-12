@@ -51,7 +51,7 @@ app.post('/api/streams', (req, res) => {
 
   // my logic
   const body = req.body;
-  const id = crypto.createHash('md5').update(body['client_id']).digest('hex');
+  const id = crypto.createHash('md5').update(body['client_id'].toString()).digest('hex');
   const StreamPath = `/${body['app']}/${body['stream']}`;
   const stream = new Stream(id, StreamPath);
   console.log(stream);
