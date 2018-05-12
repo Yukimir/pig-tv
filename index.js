@@ -36,7 +36,7 @@ function emitMessage(message) {
     cq.SendGroupMessage(groupID, message);
 }
 app.use(express.static('public'));
-app.post('/api/stream', (req, res) => {
+app.post('/api/streams', (req, res) => {
     console.log(req.body);
 });
 io.on('connection', function (socket) {
