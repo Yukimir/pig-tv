@@ -38,6 +38,8 @@ app.use(express.static('public'));
 
 app.post('/api/streams', (req, res) => {
   console.log(req.body);
+  res.statusCode = 200;
+  res.send(0);
 })
 
 

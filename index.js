@@ -35,6 +35,8 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.post('/api/streams', (req, res) => {
     console.log(req.body);
+    res.statusCode = 200;
+    res.send(0);
 });
 io.on('connection', function (socket) {
     audienceCount += 1;
