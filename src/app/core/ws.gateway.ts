@@ -21,8 +21,8 @@ export class WsGateway {
         private readonly streamsService: StreamsService,
         private readonly qqbotService: QQbotService
     ) {
+        console.log('New One~');
         streamsService.on('publish', (event) => {
-            console.log(this);
             this.BoardCast('post-publish', event);
         });
         streamsService.on('unpublish', (event) => {
