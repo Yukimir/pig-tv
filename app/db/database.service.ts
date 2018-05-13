@@ -1,23 +1,20 @@
 import * as Mongoose from 'mongoose'
-
-interface User extends Mongoose.Document {
-    qq: string;
-    nickname: string;
-    sign: string;
-}
+import { User } from './database.interface'
 
 let userSchema = new Mongoose.Schema(
     {
         qq: Mongoose.SchemaTypes.String,
+        id: Mongoose.SchemaTypes.String,
+        mail: Mongoose.SchemaTypes.String,
+        password: Mongoose.SchemaTypes.String,
         nickname: Mongoose.SchemaTypes.String,
-        sign: Mongoose.SchemaTypes.String
     },
     {
         collection: 'user'
     }
 )
 
-export class DBHelper {
+export class DataBaseService {
     connection: Mongoose.Connection;
     userModel: Mongoose.Model<User>
     constructor(uri: string) {
@@ -25,8 +22,14 @@ export class DBHelper {
         this.connection = Mongoose.createConnection(uri);
         this.userModel = this.connection.model<User>('user', userSchema, 'user');
     }
-    async findData() {
-        
+    async findData(condition) {
+        return await this.userModel.find(condition);
+    }
+    async createData(...doc) {
+        return await this.userModel.create(doc);
+    }
+    async updateData(condition, doc) {
+        return await this.userModel.findOneAndUpdate(condition, doc, { upsert: true })
     }
 
 }

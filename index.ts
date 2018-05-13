@@ -90,6 +90,12 @@ app.post('/api/streams', async (req, res) => {
   // 用户通过这个md5作为path来进行推流
   // {qq,nickname,sign} <- 数据model
   // 大概就是这样，狗屎QQ还要审核，傻逼
+
+  // 然后可以增加一个截图的功能，参考srs的wiki
+})
+
+app.post('/api/reg', (req, res) => {
+
 })
 
 // socket-io
