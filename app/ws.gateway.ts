@@ -21,9 +21,14 @@ export class WsGateway {
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
+        let resData = {
+            liveList: this.streamsService.LiveStreams,
+            djList: this.streamsService.DjStreams
+        }
+        console.log(resData);
         return {
             event: 'liveStreams-list',
-            data: 'fuckyou'
+            data: resData
         }
     }
     @SubscribeMessage('se')
