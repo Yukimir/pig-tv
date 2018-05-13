@@ -11,7 +11,6 @@ export class StreamsController {
     @HttpCode(200)
     @Post()
     newStream(@Body() body: StreamPublishEventDto) {
-        console.log(body);
         if (body.action === 'on_publish') {
             this.streamService.Publish(body);
         }

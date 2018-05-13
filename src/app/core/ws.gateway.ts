@@ -47,6 +47,7 @@ export class WsGateway {
         this.AudienceCount = this.audienceCount < 0 ? 0 : this.audienceCount;
     }
     BoardCast(channel: string, message: any) {
+        console.log(this);
         this.server.emit(channel, message);
     }
 }
