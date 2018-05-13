@@ -4,8 +4,7 @@ import { CoreModule } from './core/core.module'
 
 @Module({
     imports: [
-        CoreModule,
-        StreamsModule
+        CoreModule
     ]
 })
 export class ApplicationModule { }

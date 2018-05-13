@@ -20,7 +20,14 @@ export class WsGateway {
     constructor(
         private readonly streamsService: StreamsService,
         private readonly qqbotService: QQbotService
-    ) { }
+    ) {
+        streamsService.on('publish', (event) => {
+            this.BoardCast('post-publish', event);
+        });
+        streamsService.on('unpublish', (event) => {
+            this.BoardCast('done-publish', event);
+        })
+    }
 
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
