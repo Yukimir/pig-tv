@@ -19,6 +19,7 @@ export class WsGateway {
 
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client: Socket, data): WsResponse<any> {
+        console.log(client);
         this.AudienceCount += 1;
         return {
             event: 'liveStreams-list',
