@@ -102,6 +102,7 @@ class AudioPlayer {
         const stream = this.streamList[index];
         if (!stream) return;
         if(stream === this.stream) return;
+        this.stream = stream;
         // 先摧毁
         if(this.flvPlayer) this.destroyStream();
         // 再制造
@@ -120,7 +121,6 @@ class AudioPlayer {
             this.playIcon.className = 'fa fa-play-circle';
         }
         this.flvPlayer = flvPlayer;
-        this.stream = stream;
         //调整标签
         this.showPlayer();
         this.pElement.innerHTML = stream.stream;
