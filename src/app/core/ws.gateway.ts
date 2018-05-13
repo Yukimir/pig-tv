@@ -6,7 +6,7 @@ import { QQbotService } from './qqbot.service'
 
 @Injectable()
 @WebSocketGateway()
-export class WsGateway {
+export class WsGateway implements OnGatewayInit {
     private audienceCount = 0;
     public get AudienceCount() {
         return this.audienceCount;
@@ -16,21 +16,20 @@ export class WsGateway {
         this.BoardCast('update-pig', this.audienceCount);
     }
     @WebSocketServer()
-    public server: Server;
+    private server: Server;
+
     constructor(
         private readonly streamsService: StreamsService,
         private readonly qqbotService: QQbotService
-    ) {
-        const self = this;
-        streamsService.on('publish', (event) => {
-            console.log(self);
+    ) {}
+    afterInit() {
+        this.streamsService.on('publish', (event) => {
             this.BoardCast('post-publish', event);
         });
-        streamsService.on('unpublish', (event) => {
+        this.streamsService.on('unpublish', (event) => {
             this.BoardCast('done-publish', event);
         })
     }
-
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount = this.AudienceCount + 1;
