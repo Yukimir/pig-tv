@@ -18,13 +18,19 @@ export class WsGateway {
     }
 
     @SubscribeMessage('request-liveStreams')
-    onRequestLiveStreams(client: Socket, data) {
+    onRequestLiveStreams(client: Socket, data): WsResponse<any> {
         this.AudienceCount += 1;
-        client.emit('liveStreams-list', this.streamsService.LiveStreams, this.streamsService.DjStreams);
+        return {
+            event: 'liveStreams-list',
+            data: {
+                liveStreams: this.streamsService.LiveStreams,
+                djStreams: this.streamsService.DjStreams
+            }
+        }
     }
     @SubscribeMessage('se')
     onSe(client: Socket, data) {
-        this.server.emit(data);
+        this.BoardCast('se', data);
     }
     @SubscribeMessage('disconnect')
     onDisconnect(client: Socket, data) {
