@@ -209,7 +209,13 @@
             socket.on('se', (v) => {
                 playSE(v);
             })
-            socket.emit('request-liveStreams');
+            socket.on('connect', () => {
+                socket.emit('request-liveStreams');
+            })
+            socket.on('events', function (data) {
+                console.log('event', data);
+            });
+
         }
         function toggleFullScreen() {
             const doc = window.document;

@@ -17,7 +17,7 @@ export class WsGateway {
     constructor(private readonly streamsService: StreamsService) {
 
     }
-    
+
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
@@ -34,6 +34,16 @@ export class WsGateway {
     onDisconnect(client: Socket, data) {
         this.audienceCount -= 1;
         this.AudienceCount = this.audienceCount < 0 ? 0 : this.audienceCount;
+    }
+
+    @SubscribeMessage('events')
+    onEvent(client: Socket, data): WsResponse<number> {
+        const event = 'events';
+        const response = [1, 2, 3];
+        return {
+            event,
+            data: 1
+        }
     }
     BoardCast(channel: string, message: any) {
         this.server.emit(channel, message);
