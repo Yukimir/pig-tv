@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { QQbotService } from './qqbot.service'
+import { WsGateway } from './ws.gateway'
 
 
-
+@Global()
 @Module({
-    providers: [QQbotService],
-    exports: [QQbotService]
+    providers: [QQbotService, WsGateway],
+    exports: [QQbotService, WsGateway]
 })
 export class CoreModule {
 

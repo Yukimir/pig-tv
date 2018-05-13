@@ -6,3 +6,9 @@ export interface StreamPublishEventDto {
     app: string;
     stream: string;
 }
+export interface Stream {
+    id: string;
+    app: string;
+    stream: string;
+    streamName?: string;
+}

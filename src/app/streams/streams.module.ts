@@ -4,7 +4,6 @@ import { StreamsService } from './streams.service'
 import { CoreModule } from '../core/core.module'
 
 @Module({
-    imports: [CoreModule],
     controllers: [StreamsController],
     providers: [StreamsService],
     exports: [StreamsService]

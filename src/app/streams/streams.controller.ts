@@ -8,16 +8,15 @@ export class StreamsController {
     constructor(private readonly streamService: StreamsService) {
 
     }
-    
     @HttpCode(200)
     @Post()
     newStream(@Body() body: StreamPublishEventDto) {
         console.log(body);
         if (body.action === 'on_publish') {
-
+            this.streamService.Publish(body);
         }
         if (body.action === 'on_unpublish') {
-
+            this.streamService.UnPublish(body);
         }
         return 0;
     }

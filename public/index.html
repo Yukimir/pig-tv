@@ -187,21 +187,24 @@
             function emit(channel, msg) {
                 socket.emit(channel, msg);
             }
-            socket.on('liveStreams-list', (liveList, djList) => {
-                console.log(liveList);
-                // loadStreamsByList(liveList);
-                // audioPlayer.loadStreamList(djList);
+            socket.on('liveStreams-list', (streamList) => {
+                const liveList = [];
+                const djList = [];
+                for (let stream of streamList) {
+                    if (stream['app'] === 'dj') djList.push(stream);
+                    if (stream['app'] === 'live') liveList.push(stream);
+                }
+                loadStreamsByList(liveList);
+                audioPlayer.loadStreamList(djList);
             })
             socket.on('post-publish', (stream) => {
-                addStream(stream);
+                if (stream['app'] === 'dj') audioPlayer.addStream(stream);
+                if (stream['app'] === 'live') addStream(stream);
             })
             socket.on('done-publish', (id) => {
                 removeStream(id);
                 audioPlayer.removeStream(id);
             })
-            socket.on('dj-post-publish', (stream) => {
-                audioPlayer.addStream(stream);
-            });
             socket.on('update-pig', (pigs) => {
                 pigsCount = pigs;
                 document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
