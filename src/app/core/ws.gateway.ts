@@ -23,6 +23,7 @@ export class WsGateway implements OnGatewayInit {
         private readonly qqbotService: QQbotService
     ) {}
     afterInit() {
+        const self = this;
         this.streamsService.on('publish', (event) => {
             this.BoardCast('post-publish', event);
         });
