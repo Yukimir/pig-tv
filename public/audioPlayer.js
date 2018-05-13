@@ -109,7 +109,7 @@ class AudioPlayer {
             type: 'flv',
             isLive: true,
             cors: true,
-            url: `ws://${host}:8000${stream.StreamPath}.flv`,
+            url: `http://${host}:8000/${this.stream.app}/${this.stream.stream}.flv`,
             hasVideo: false
         })
         flvPlayer.attachMediaElement(this.audioElement);

@@ -47,7 +47,7 @@ class Player {
             type: 'flv',
             isLive: true,
             cors: true,
-            url: `http://${host}:8000${this.stream.StreamPath}.flv`,
+            url: `http://${host}:8000/${this.stream.app}/${this.stream.stream}.flv`,
         })
         this.flvPlayer = flvPlayer;
         flvPlayer.attachMediaElement(this.videoElement);

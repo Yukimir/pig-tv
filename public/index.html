@@ -86,7 +86,7 @@
 
     <script>
         let ran = Math.floor((Math.random() * 1) + 1);
-        var host = `live${ran}.aigis.me`
+        var host = `live1.aigis.me`
         let liveStreams = [];
         let djStreams = [];
         let players = [];
@@ -154,15 +154,9 @@
             function loadStreamsByList(list) {
                 if (streamClosed) return;
                 if (list) liveStreams = list;
-                count = 0;
                 for (let i = 0; i < 4; i++) {
-                    while (count < liveStreams.length) {
-                        if (liveStreams[count] && liveStreams[count].StreamPath.slice(6) !== '') break;
-                        count++;
-                    }
-                    players[i].changeStream(liveStreams[count]);
+                    players[i].changeStream(liveStreams[i]);
                     if (i !== 0) players[i].muted = true;
-                    count++;
                 }
             }
             // DJ
