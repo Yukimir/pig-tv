@@ -32,7 +32,7 @@ export class WsGateway {
 
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
-        this.AudienceCount += 1;
+        this.AudienceCount = this.AudienceCount + 1;
         return {
             event: 'liveStreams-list',
             data: this.streamsService.Streams
