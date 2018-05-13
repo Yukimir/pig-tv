@@ -3,7 +3,7 @@ import { Server, Socket } from 'socket.io';
 import { StreamsService } from './streams/streams.service'
 
 @WebSocketGateway()
-export class WsGateway implements OnGatewayInit {
+export class WsGateway {
     private audienceCount = 0;
     public get AudienceCount() {
         return this.audienceCount;
@@ -17,12 +17,7 @@ export class WsGateway implements OnGatewayInit {
     constructor(private readonly streamsService: StreamsService) {
 
     }
-
-    afterInit() {
-        this.server.on('connection', (socket) => {
-            socket.emit('liveStreams-list');
-        })
-    }
+    
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
