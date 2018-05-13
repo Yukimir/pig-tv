@@ -1,14 +1,15 @@
-import { Controller, Post, Req, Res, Body } from '@nestjs/common'
+import { Controller, Post, Req, Res, Body, HttpCode } from '@nestjs/common'
 import { StreamPublishEventDto } from './streams.interface'
 import { StreamsService } from './streams.service'
 
 @Controller('api/streams')
 export class StreamsController {
-    
-    constructor(private readonly streamService: StreamsService) {
-        
-     }
 
+    constructor(private readonly streamService: StreamsService) {
+
+    }
+    
+    @HttpCode(200)
     @Post()
     newStream(@Body() body: StreamPublishEventDto) {
         console.log(body);
@@ -18,5 +19,6 @@ export class StreamsController {
         if (body.action === 'on_unpublish') {
 
         }
+        return 0;
     }
 }
