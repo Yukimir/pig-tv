@@ -198,10 +198,12 @@
                 audioPlayer.loadStreamList(djList);
             })
             socket.on('post-publish', (stream) => {
+                console.log(stream);
                 if (stream['app'] === 'dj') audioPlayer.addStream(stream);
                 if (stream['app'] === 'live') addStream(stream);
             })
             socket.on('done-publish', (id) => {
+                console.log(id);
                 removeStream(id);
                 audioPlayer.removeStream(id);
             })
