@@ -188,6 +188,7 @@
                 socket.emit(channel, msg);
             }
             socket.on('liveStreams-list', (liveList, djList) => {
+                console.log(liveList,djList);
                 loadStreamsByList(liveList);
                 audioPlayer.loadStreamList(djList);
             })
