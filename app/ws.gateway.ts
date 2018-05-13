@@ -35,16 +35,6 @@ export class WsGateway {
         this.audienceCount -= 1;
         this.AudienceCount = this.audienceCount < 0 ? 0 : this.audienceCount;
     }
-
-    @SubscribeMessage('events')
-    onEvent(client: Socket, data): WsResponse<number> {
-        const event = 'events';
-        const response = [1, 2, 3];
-        return {
-            event,
-            data: 1
-        }
-    }
     BoardCast(channel: string, message: any) {
         this.server.emit(channel, message);
     }

@@ -188,9 +188,9 @@
                 socket.emit(channel, msg);
             }
             socket.on('liveStreams-list', (liveList, djList) => {
-                console.log('fuck');
-                loadStreamsByList(liveList);
-                audioPlayer.loadStreamList(djList);
+                console.log(liveList);
+                // loadStreamsByList(liveList);
+                // audioPlayer.loadStreamList(djList);
             })
             socket.on('post-publish', (stream) => {
                 addStream(stream);
@@ -212,10 +212,6 @@
             socket.on('connect', () => {
                 socket.emit('request-liveStreams');
             })
-            socket.on('events', function (data) {
-                console.log('event', data);
-            });
-
         }
         function toggleFullScreen() {
             const doc = window.document;
