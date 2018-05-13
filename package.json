@@ -10,12 +10,11 @@
   "author": "yukimir",
   "license": "MIT",
   "dependencies": {
-    "@nestjs/common": "^4.6.6",
-    "@nestjs/core": "^4.6.6",
-    "@nestjs/microservices": "^4.6.6",
-    "@nestjs/testing": "^4.6.6",
-    "@nestjs/websockets": "^4.6.6",
-    "@types/socketio-wildcard": "^2.0.1",
+    "@nestjs/common": "^5.0.0",
+    "@nestjs/core": "^5.0.0",
+    "@nestjs/microservices": "^5.0.0",
+    "@nestjs/testing": "^5.0.0",
+    "@nestjs/websockets": "^5.0.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "joi": "^13.3.0",
@@ -33,6 +32,7 @@
     "@types/mongoose": "^5.0.13",
     "@types/node": "^10.0.4",
     "@types/socket.io": "^1.4.33",
-    "typescript": "^2.8.3"
+    "typescript": "^2.8.3",
+    "@types/socketio-wildcard": "^2.0.1"
   }
 }

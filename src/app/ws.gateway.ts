@@ -1,7 +1,10 @@
 import { WebSocketGateway, SubscribeMessage, WebSocketServer, WsResponse, OnGatewayInit } from '@nestjs/websockets';
+import { Injectable } from '@nestjs/common'
 import { Server, Socket } from 'socket.io';
 import { StreamsService } from './streams/streams.service'
+import { QQbotService } from './core/qqbot.service'
 
+@Injectable()
 @WebSocketGateway()
 export class WsGateway {
     private audienceCount = 0;
@@ -14,19 +17,18 @@ export class WsGateway {
     }
     @WebSocketServer()
     private server: Server;
-    constructor(private readonly streamsService: StreamsService) {
-
-    }
+    constructor(
+        private readonly streamsService: StreamsService,
+        private readonly qqbotService: QQbotService
+    ) { }
 
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
-        console.log("i'm live");
         let resData = {
             liveList: this.streamsService.LiveStreams,
             djList: this.streamsService.DjStreams
         }
-        console.log(resData);
         return {
             event: 'liveStreams-list',
             data: resData

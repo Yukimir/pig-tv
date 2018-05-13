@@ -1,7 +1,7 @@
-import { Component } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { cqsocket } from 'node-cqsocket'
 
-@Component()
+@Injectable()
 export class QQbotService {
     private readonly groupID = 111438162;
     private readonly host = '127.0.0.1';
