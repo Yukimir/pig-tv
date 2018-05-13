@@ -22,6 +22,7 @@ export class WsGateway {
         private readonly qqbotService: QQbotService
     ) {
         streamsService.on('publish', (event) => {
+            console.log(this);
             this.BoardCast('post-publish', event);
         });
         streamsService.on('unpublish', (event) => {
@@ -47,7 +48,6 @@ export class WsGateway {
         this.AudienceCount = this.audienceCount < 0 ? 0 : this.audienceCount;
     }
     BoardCast(channel: string, message: any) {
-        console.log(this);
         this.server.emit(channel, message);
     }
 }
