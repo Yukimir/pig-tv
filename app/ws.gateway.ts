@@ -21,6 +21,7 @@ export class WsGateway {
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
+        console.log("i'm live");
         let resData = {
             liveList: this.streamsService.LiveStreams,
             djList: this.streamsService.DjStreams
