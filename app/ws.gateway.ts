@@ -24,14 +24,11 @@ export class WsGateway implements OnGatewayInit {
         })
     }
     @SubscribeMessage('request-liveStreams')
-    onRequestLiveStreams(client: Socket, data): WsResponse<any> {
+    onRequestLiveStreams(client, data): WsResponse<any> {
         this.AudienceCount += 1;
         return {
             event: 'liveStreams-list',
-            data: {
-                liveStreams: this.streamsService.LiveStreams,
-                djStreams: this.streamsService.DjStreams
-            }
+            data: 'fuckyou'
         }
     }
     @SubscribeMessage('se')
@@ -43,7 +40,6 @@ export class WsGateway implements OnGatewayInit {
         this.audienceCount -= 1;
         this.AudienceCount = this.audienceCount < 0 ? 0 : this.audienceCount;
     }
-
     BoardCast(channel: string, message: any) {
         this.server.emit(channel, message);
     }
