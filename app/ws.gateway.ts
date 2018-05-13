@@ -15,11 +15,13 @@ export class WsGateway {
     @WebSocketServer()
     private server: Server;
     constructor(private readonly streamsService: StreamsService) {
+        this.server.on('connection', (socket) => {
+            socket.emit('liveStreams-list');
+        })
     }
 
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client: Socket, data): WsResponse<any> {
-        console.log(client);
         this.AudienceCount += 1;
         return {
             event: 'liveStreams-list',
