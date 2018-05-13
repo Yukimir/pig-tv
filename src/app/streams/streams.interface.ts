@@ -14,6 +14,6 @@ export interface Stream {
 }
 
 export class StreamEventMap {
-    'publish': Stream;
-    'unpublish': string;
+    'publish': Stream = null;
+    'unpublish': string = null;
 }
