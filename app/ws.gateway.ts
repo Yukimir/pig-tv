@@ -1,9 +1,9 @@
-import { WebSocketGateway, SubscribeMessage, WebSocketServer, WsResponse } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, WebSocketServer, WsResponse, OnGatewayInit } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { StreamsService } from './streams/streams.service'
 
 @WebSocketGateway()
-export class WsGateway {
+export class WsGateway implements OnGatewayInit {
     private audienceCount = 0;
     public get AudienceCount() {
         return this.audienceCount;
@@ -15,11 +15,14 @@ export class WsGateway {
     @WebSocketServer()
     private server: Server;
     constructor(private readonly streamsService: StreamsService) {
+
+    }
+
+    afterInit() {
         this.server.on('connection', (socket) => {
             socket.emit('liveStreams-list');
         })
     }
-
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client: Socket, data): WsResponse<any> {
         this.AudienceCount += 1;
