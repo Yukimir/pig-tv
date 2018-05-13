@@ -16,13 +16,14 @@ export class WsGateway {
         this.BoardCast('update-pig', this.audienceCount);
     }
     @WebSocketServer()
-    private server: Server;
+    public server: Server;
     constructor(
         private readonly streamsService: StreamsService,
         private readonly qqbotService: QQbotService
     ) {
-        console.log('New One~');
+        const self = this;
         streamsService.on('publish', (event) => {
+            console.log(self);
             this.BoardCast('post-publish', event);
         });
         streamsService.on('unpublish', (event) => {
