@@ -123,7 +123,7 @@ class AudioPlayer {
         this.flvPlayer = flvPlayer;
         //调整标签
         this.showPlayer();
-        this.pElement.innerHTML = stream.stream;
+        this.pElement.innerHTML = stream.streamName;
     }
     genList() {
         this.listElement.innerHTML = '';
@@ -137,7 +137,7 @@ class AudioPlayer {
                     this.loadStream(i);
                 }
             }
-            spanElement.innerHTML = stream.stream;
+            spanElement.innerHTML = stream.streamName;
             spanElement.addEventListener('click', func());
             this.listElement.appendChild(spanElement);
         }

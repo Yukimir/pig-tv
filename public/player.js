@@ -61,7 +61,7 @@ class Player {
     }
     changeTags() {
         let seed = this.stream.id.charCodeAt(0);
-        this.spanElement.innerHTML = this.titleList[(seed % (this.titleList.length))] + '-' + this.stream.stream;
+        this.spanElement.innerHTML = this.titleList[(seed % (this.titleList.length))] + '-' + this.stream.streamName;
     }
     get muted() {
         return this.videoElement.muted;

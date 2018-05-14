@@ -55,6 +55,6 @@ export class UsersService {
     }
 
     public async FindUserBySign(sign: string) {
-        return await this.userModel.findOne(sign);
+        return await this.userModel.findOne({sign});
     }
 }
