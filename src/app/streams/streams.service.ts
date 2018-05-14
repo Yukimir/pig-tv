@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { QQbotService } from '../core/qqbot.service'
-import { StreamPublishEventDto, Stream, StreamEventMap } from './streams.interface'
+import { StreamPublishEventDto, Stream } from './streams.interface'
 import * as crypto from 'crypto'
 import { WsGateway } from '../core/ws.gateway'
+import { UsersService } from '../users/users.service';
+import * as request from 'request';
 
 @Injectable()
 export class StreamsService {
@@ -10,26 +12,33 @@ export class StreamsService {
     private eventStore = new Map<string, Array<any>>();
     constructor(
         private readonly qqbotService: QQbotService,
+        private readonly wsGateWay: WsGateway,
+        private readonly usersService: UsersService
     ) {
-        for (let key in (new StreamEventMap())) {
-            this.eventStore.set(key, []);
-        }
+        wsGateWay.on('request-liveStreams', (client) => {
+            client.emit('liveStreams-list', this.streams);
+        })
     }
+
     public get Streams() {
         return this.streams;
     }
     public async Publish(streamEvent: StreamPublishEventDto, ) {
-        const stream: Stream = {
-            id: crypto.createHash('md5').update(streamEvent.client_id.toString()).digest('hex'),
-            app: streamEvent.app,
-            stream: streamEvent.stream
-        };
-
         // 今后这里要加上验证stream，通过user模块来验证，之后加上streamName
-
-        this.streams.push(stream);
-        this.dispatch('publish', stream);
-
+        const user = await this.usersService.FindUserBySign(streamEvent.stream);
+        if (user) {
+            const stream: Stream = {
+                id: crypto.createHash('md5').update(streamEvent.client_id.toString()).digest('hex'),
+                app: streamEvent.app,
+                stream: streamEvent.stream,
+                streamName: user.nickname
+            };
+            this.streams.push(stream);
+            this.wsGateWay.BoardCast('post-publish', stream);
+        } else {
+            // 中止流的推送
+            request.delete(`http://127.0.0.1:1985/api/v1/clients/${streamEvent.client_id.toString()}`);
+        }
     }
     public UnPublish(streamEvent: StreamPublishEventDto) {
         const id = crypto.createHash('md5').update(streamEvent.client_id.toString()).digest('hex');
@@ -38,19 +47,7 @@ export class StreamsService {
         })
         if (i !== -1) {
             this.streams.splice(i, 1);
-            this.dispatch('unpublish', id);
-        }
-    }
-
-    public on<K extends keyof StreamEventMap>(type: K, cb: (event: StreamEventMap[K]) => any) {
-        this.eventStore.get(type).push(cb);
-    }
-    private dispatch<K extends keyof StreamEventMap>(type: K, event: StreamEventMap[K]) {
-        const list = this.eventStore.get(type);
-        if (list) {
-            for (const fn of list) {
-                fn(event);
-            }
+            this.wsGateWay.BoardCast('done-publish', id);
         }
     }
 }

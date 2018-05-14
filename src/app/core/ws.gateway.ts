@@ -4,10 +4,15 @@ import { Server, Socket } from 'socket.io';
 import { StreamsService } from '../streams/streams.service'
 import { QQbotService } from './qqbot.service'
 
+export class WsEventMap {
+    'request-liveStreams': Socket = null;
+}
+
 @Injectable()
 @WebSocketGateway()
 export class WsGateway implements OnGatewayInit {
     private audienceCount = 0;
+    private eventStore = new Map<string, Array<any>>();
     public get AudienceCount() {
         return this.audienceCount;
     }
@@ -19,30 +24,26 @@ export class WsGateway implements OnGatewayInit {
     private server: Server;
 
     constructor(
-        private readonly streamsService: StreamsService,
         private readonly qqbotService: QQbotService
-    ) {}
-    afterInit() {
-        const self = this;
-        this.streamsService.on('publish', (event) => {
-            this.BoardCast('post-publish', event);
-        });
-        this.streamsService.on('unpublish', (event) => {
-            this.BoardCast('done-publish', event);
-        })
-    }
-    @SubscribeMessage('request-liveStreams')
-    onRequestLiveStreams(client, data): WsResponse<any> {
-        this.AudienceCount = this.AudienceCount + 1;
-        return {
-            event: 'liveStreams-list',
-            data: this.streamsService.Streams
+    ) {
+        for (let key in (new WsEventMap())) {
+            this.eventStore.set(key, []);
         }
     }
+    afterInit() {
+        const self = this;
+    }
+    @SubscribeMessage('request-liveStreams')
+    onRequestLiveStreams(client: Socket, data) {
+        this.AudienceCount = this.AudienceCount + 1;
+        this.dispatch('request-liveStreams', client);
+    }
+
     @SubscribeMessage('se')
     onSe(client: Socket, data) {
         this.BoardCast('se', data);
     }
+
     @SubscribeMessage('disconnect')
     onDisconnect(client: Socket, data) {
         this.audienceCount -= 1;
@@ -50,5 +51,17 @@ export class WsGateway implements OnGatewayInit {
     }
     BoardCast(channel: string, message: any) {
         this.server.emit(channel, message);
+    }
+
+    public on<K extends keyof WsEventMap>(type: K, cb: (event: WsEventMap[K]) => any) {
+        this.eventStore.get(type).push(cb);
+    }
+    private dispatch<K extends keyof WsEventMap>(type: K, event: WsEventMap[K]) {
+        const list = this.eventStore.get(type);
+        if (list) {
+            for (const fn of list) {
+                fn(event);
+            }
+        }
     }
 }

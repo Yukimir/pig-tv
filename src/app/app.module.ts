@@ -1,10 +1,20 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { StreamsModule } from './streams/streams.module'
 import { CoreModule } from './core/core.module'
+import { TokenVerifyMiddleware } from './core/tokenVerify.middleware';
+import { UsersModule } from './users/users.module';
 
 @Module({
     imports: [
-        CoreModule
+        CoreModule,
+        StreamsModule,
+        UsersModule
     ]
 })
-export class ApplicationModule { }
+export class ApplicationModule implements NestModule {
+    configure(consumer: MiddlewareConsumer): void {
+        consumer
+            .apply(TokenVerifyMiddleware)
+            .forRoutes('/user');
+    }
+}
