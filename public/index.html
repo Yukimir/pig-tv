@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="main.css" type="text/css" />
     <link rel="stylesheet" href="player.css" type="text/css" />
     <link rel="stylesheet" href="audioPlayer.css" type="text/css" />
+    <link rel="stylesheet" href="user.css" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
@@ -22,7 +23,7 @@
             </div>
             <div id="dj"></div>
             <div class="item">
-                <p>登入</p>
+                <p class="cursor-pointer" onclick="showUserPanel()">登入</p>
                 <i class="fa fa-expand" aria-hidden="true" onclick="toggleFullScreen()"></i>
             </div>
         </div>
@@ -81,9 +82,21 @@
         </div>
     </div>
 
+    <div class="user hidden" id="user-container">
+        <div class="close">
+            <div>
+                <i class="fa fa-close cursor-pointer" aria-hidden="true" onclick="hideUserPanel()"></i>
+            </div>
+        </div>
+        <div class="panel-container">
+            <div class="user-panel" id="user-panel"></div>
+        </div>
+
+    </div>
 
 
 
+    <script src="/user.js"></script>
     <script>
         let ran = Math.floor((Math.random() * 1) + 1);
         var host = `live${ran}.aigis.me`

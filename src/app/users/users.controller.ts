@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Body, HttpException, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Controller, Post, Get, Body, HttpException, UsePipes, ValidationPipe, Put } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { JsonWebTokenService, JsonWebToken } from "../core/jwt.service";
-import { loginDto, regDto, modifyDto } from "./users.model";
+import { loginDto, regDto, modifyDto, modifyRequestDto } from "./users.model";
+import { Constants, HttpSuccessMessage } from "../constants";
 
 @Controller()
 export class UsersController {
@@ -18,7 +19,7 @@ export class UsersController {
     async postReg(@Body() reg: regDto) {
         try {
             let user = await this.usersService.AddUser(reg);
-            return this.jwtService.Sign({ _id: user._id })
+            return new HttpSuccessMessage(await this.usersService.GenToken(user));
         } catch (err) {
             throw new HttpException(err, 400);
         }
@@ -30,9 +31,9 @@ export class UsersController {
         try {
             let user = await this.usersService.Login(login);
             if (user) {
-                return this.jwtService.Sign({ _id: user._id });
+                return new HttpSuccessMessage(await this.usersService.GenToken(user));
             } else {
-                throw new HttpException('Not Found User Or PassWord Error', 400);
+                throw new HttpException(Constants.PASSWORD_USERNAME_ERROR, 400);
             }
         } catch (err) {
             throw new HttpException(err, 400);
@@ -41,15 +42,15 @@ export class UsersController {
     }
 
     // 需要登陆状态，通过middleware
-    @Post('/user/modify')
-    @UsePipes(new ValidationPipe({ transform: false }))
-    async postModify(@Body() body: { token: JsonWebToken, update: modifyDto }) {
+    @Put('/user/modify')
+    @UsePipes(new ValidationPipe({ transform: false, skipMissingProperties: true }))
+    async postModify(@Body() body: modifyRequestDto) {
         let _id = body.token._id;
         try {
-            let r = await this.usersService.ModifyUser(_id, body.update);
-            return r;
+            const user = await this.usersService.ModifyUser(_id, body.update);
+            return new HttpSuccessMessage(await this.usersService.GenToken(user));
         } catch (err) {
-            new HttpException(err, 400);
+            throw new HttpException(err, 400);
         }
     }
 
@@ -57,6 +58,6 @@ export class UsersController {
     @Post('/user/info')
     async getInfo(@Body() body: { token: JsonWebToken }) {
         let user = await this.usersService.FindUser(body.token._id);
-        return user;
+        return new HttpSuccessMessage(user);
     }
 }

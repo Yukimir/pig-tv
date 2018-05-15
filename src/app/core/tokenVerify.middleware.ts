@@ -1,20 +1,30 @@
 import { Injectable, NestMiddleware, MiddlewareFunction } from '@nestjs/common';
-import { JsonWebTokenService } from './jwt.service';
+import { JsonWebTokenService, JsonWebToken } from './jwt.service';
 import { Request, Response } from 'express';
+import { BadRequestMessage } from '../constants';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class TokenVerifyMiddleware implements NestMiddleware {
-    constructor(private readonly jwt: JsonWebTokenService) {
+    constructor(
+        private readonly jwt: JsonWebTokenService,
+        private readonly usersService: UsersService
+    ) {
 
     }
     resolve(...args: any[]): MiddlewareFunction {
-        return (req: Request, res: Response, next) => {
-            let obj;
-            if (req.body['token'] && (obj = this.jwt.Verify(req.body['token']))) {
+        return async (req: Request, res: Response, next) => {
+            try {
+                let obj: JsonWebToken;
+                if (!req.body['token'] || !(obj = <JsonWebToken>this.jwt.Verify(req.body['token']))) throw 'no token';
+                if (!obj._id || !obj.password) throw 'no id or password';
+                const user = await this.usersService.FindUser(obj._id, true);
+                if (!user || user.password !== obj.password) throw 'password error';
+
                 req.body['token'] = obj;
                 next();
-            } else {
-                res.sendStatus(400);
+            } catch (err) {
+                res.status(400).send(new BadRequestMessage(err));
             }
         }
     }

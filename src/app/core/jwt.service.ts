@@ -3,8 +3,7 @@ import * as jwt from 'jsonwebtoken'
 
 export interface JsonWebToken {
     _id: string;
-    iat: number;
-    exp: number;
+    password: string;
 }
 
 @Injectable()
