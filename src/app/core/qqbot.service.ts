@@ -10,6 +10,7 @@ export class QQbotService {
     private readonly myQQ = 2745927718;
     private cq: cqsocket;
     constructor() {
+        console.log('starging cq');
         this.cq = new cqsocket(this.host, this.port);
         this.cq.listen(60001);
         this.cq.on('GroupMessage', (event) => {
