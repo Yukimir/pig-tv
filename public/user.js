@@ -229,8 +229,8 @@ async function init() {
 init();
 
 function showUserPanel() {
-    document.getElementById('user-container').classList.remove('hidden');
+    document.getElementById('user-container').classList.remove('none');
 }
 function hideUserPanel() {
-    document.getElementById('user-container').classList.add('hidden');
+    document.getElementById('user-container').classList.add('none');
 }
