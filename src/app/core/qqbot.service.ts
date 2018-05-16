@@ -13,11 +13,13 @@ export class QQbotService {
         this.cq = new cqsocket(this.host, this.port);
         this.cq.listen(60001);
         this.cq.on('GroupMessage', (event) => {
+            console.log(event);
             if (event.ID === this.groupID && Math.random() < 0.03) {
                 this.cq.SendGroupMessage(event.ID, event.message);
             }
         });
         this.cq.on('PrivateMessage', (event) => {
+            console.log(event);
             if (event.qq === this.myQQ) {
                 this.emitMessage(event.message);
             }
