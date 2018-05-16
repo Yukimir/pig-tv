@@ -5,15 +5,15 @@ import { cqsocket } from 'node-cqsocket'
 export class QQbotService {
     private readonly groupID = 111438162;
     private readonly host = '127.0.0.1';
-    private readonly port = 9000;
-    private readonly localPort = 9001;
+    private readonly port = 9001;
+    private readonly localPort = 9002;
     private readonly myQQ = 2745927718;
     private cq: cqsocket;
     constructor() {
-        console.log('starging cq');
         this.cq = new cqsocket(this.host, this.port);
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
+            console.log(event);
             if (event.ID === this.groupID && Math.random() < 0.03) {
                 this.cq.SendGroupMessage(event.ID, event.message);
             }
