@@ -23,7 +23,7 @@
     "joi": "^13.3.0",
     "jsonwebtoken": "^8.2.1",
     "mongoose": "^5.1.0",
-    "node-cqsocket": "0.0.1",
+    "node-cqsocket": "^0.0.4",
     "reflect-metadata": "^0.1.12",
     "request": "^2.85.0",
     "rxjs": "^6.1.0",
