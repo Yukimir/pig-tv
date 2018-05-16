@@ -5,8 +5,8 @@ import { cqsocket } from 'node-cqsocket'
 export class QQbotService {
     private readonly groupID = 111438162;
     private readonly host = '127.0.0.1';
-    private readonly port = 9001;
-    private readonly localPort = 9002;
+    private readonly port = 60000;
+    private readonly localPort = 60001;
     private readonly myQQ = 2745927718;
     private cq: cqsocket;
     constructor() {
