@@ -13,7 +13,6 @@ export class QQbotService {
         this.cq = new cqsocket(this.host, this.port);
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
-            console.log(event);
             if (event.ID === this.groupID && Math.random() < 0.03) {
                 this.cq.SendGroupMessage(event.ID, event.message);
             }
