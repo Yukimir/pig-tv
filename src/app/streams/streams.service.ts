@@ -29,12 +29,19 @@ export class StreamsService {
         if (user) {
             const stream: Stream = {
                 id: crypto.createHash('md5').update(streamEvent.client_id.toString()).digest('hex'),
+                _id: streamEvent.client_id,
                 app: streamEvent.app,
                 stream: streamEvent.stream,
                 streamName: user.nickname
             };
             this.streams.push(stream);
-            this.wsGateWay.BoardCast('post-publish', stream);
+            this.qqbotService.emitMessage(`大佬${stream.streamName}走上了舞台，快来http://live.aigis.me:3000围观她~`);
+            this.wsGateWay.BoardCast('post-publish', {
+                id: stream.id,
+                app: stream.app,
+                stream: stream.stream,
+                streamName: stream.streamName
+            });
         } else {
             // 中止流的推送
             request.delete(`http://127.0.0.1:1985/api/v1/clients/${streamEvent.client_id.toString()}`);
