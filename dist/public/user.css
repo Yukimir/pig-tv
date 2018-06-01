@@ -1,0 +1,112 @@
+.user .container {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+}
+
+.user {
+    height: 500px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+    right: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 30%;
+    margin-right: 30%;
+    box-shadow: 0 0 11px 4px #88888888;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.none {
+    display: none;
+}
+
+.user .close {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 20px;
+}
+
+.user .panel-container {
+    height: 100%;
+    padding-left: 50px;
+    padding-right:50px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.user .panel-container .user-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user form * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.user input[type="text"], input[type="password"], input[type="mail"] {
+    background-color: transparent;
+    background-color: none;
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 0;
+    font-size: 14px;
+    height: 36px;
+    line-height: 20px;
+    transition: all 0.3s;
+}
+
+.user input[type="text"]:focus, input[type="password"]:focus, input[type="mail"]:focus {
+    border-color: #ff4081;
+    border-bottom-width: 2px;
+    outline: 0;
+    padding-bottom: 6px;
+}
+
+.user button, input[type="submit"] {
+    background-image: none;
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .15), 0 1px 3px 1px rgba(0, 0, 0, .15);
+    color: inherit;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0;
+    max-width: 100%;
+    padding: 8px;
+    text-transform: uppercase;
+    user-select: none;
+    background-color: #1D8CE0;
+    color: #fff!important;
+}
+
+.user .btn-brand {
+    background-color: #1D8CE0;
+    color: #fff!important;
+}
+
+.user .btn-green {
+    background-color: #13CE66;
+    color: #fff!important;
+}
+.user .btn-red{
+    background-color:#FF4949;
+    color: #fff!important;
+}

@@ -1,0 +1,245 @@
+<html>
+
+<head>
+    <title>母猪TV-放飞自我的舞台</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="player.css" type="text/css" />
+    <link rel="stylesheet" href="audioPlayer.css" type="text/css" />
+    <link rel="stylesheet" href="user.css" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/player.js"></script>
+    <script src="/audioPlayer.js"></script>
+    <div class="background"></div>
+    <div class="main">
+        <div class="navbar">
+            <div class="item">
+                <img src="favicon.ico" style="height:40px;width:40px;" />
+                <p>母猪TV-放飞自我的舞台</p>
+            </div>
+            <div id="dj"></div>
+            <div class="item">
+                <p class="cursor-pointer" onclick="showUserPanel()">登入</p>
+                <i class="fa fa-expand" aria-hidden="true" onclick="toggleFullScreen()"></i>
+            </div>
+        </div>
+        <div class="navbar-background"></div>
+        <div class="container">
+            <div class="left-container" id="left">
+                <div class="info card">
+                    <p>请不要直播NSFW内容。</p>
+                    <p>NSFW包括但不限于 色情、残暴内容等。</p>
+                    <br>
+                    <p id="pigs-count"></p>
+                </div>
+                <div class="card" style="text-align: center">
+                    <button onclick="emit('se','oruga.ogg')">止まるんじゃねぇぞ</button>
+                    <button onclick="emit('se','yarimasune.mp3')">やりますねぇ.mp3</button>
+                    <button onclick="emit('se','sugoisugoi.wav')">すごいすごい～</button>
+                    <button onclick="emit('se','magical_splash_flare.mp3')">Magical Splash Flare</button>
+                    <button onclick="emit('se','mario-dead.mp3')">Mario Dead</button>
+                    <br>
+                    <button onclick="muteSE()">申し訳ないが淫夢厨はNG</button>
+                    <audio id="effectElement"></audio>
+                </div>
+                <div class="alipay-box card">
+                    <p>五月赞助名单</p>
+                    <p>感谢残佬的233元</p>
+                    <p>感谢raz的169.2元</p>
+                    <p>感谢喵的88.88元</p>
+                    <p>感谢毁酱的88元</p>
+                    <p>感谢钟佬的66.66元</p>
+                    <p>感谢野猪爸爸的50元</p>
+                    <p>感谢紫苑寺月的50元</p>
+                    <p>感谢NKW的20元</p>
+                    <p>感谢水之鸟的15.51元</p>
+                    <p>感谢yukilo的12.45元</p>
+                    <p>感谢四十六的8.93元</p>
+                    <img src="./alipay.png" />
+                    <p>打多打少是个缘</p>
+                </div>
+            </div>
+            <div id="hide-button" class="hide-button" onclick="hideOrShowLeft()">
+                <div class="arrow" id="botton-arrow"></div>
+            </div>
+            <div class="live-container">
+                <div class="main-container">
+                    <div class="video-container" id="video-container0">
+                        <p class="hint">台上还没有人，快上台~</p>
+                    </div>
+
+                </div>
+                <div class="sub-container">
+                    <div class="video-container" id="video-container1"></div>
+                    <div class="video-container" id="video-container2"></div>
+                    <div class="video-container" id="video-container3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="user none" id="user-container">
+        <div class="close">
+            <div>
+                <i class="fa fa-close cursor-pointer" aria-hidden="true" onclick="hideUserPanel()"></i>
+            </div>
+        </div>
+        <div class="panel-container">
+            <div class="user-panel" id="user-panel"></div>
+        </div>
+
+    </div>
+
+
+
+    <script src="/user.js"></script>
+    <script>
+        let ran = Math.floor((Math.random() * 3) + 1);
+        var host = `live.aigis.me`
+        let liveStreams = [];
+        let djStreams = [];
+        let players = [];
+        let streamClosed = false;
+        let usingDJ;
+        let pigsCount = 0;
+        const effectElement = document.getElementById('effectElement');
+        // play se
+        function playSE(path) {
+            if (effectElement.src !== '' && (effectElement.ended === false && effectElement.paused === false)) return;
+            if (effectElement.src !== path) {
+                effectElement.src = path;
+                effectElement.load();
+            }
+            effectElement.play();
+        }
+        function muteSE() {
+            effectElement.muted = true;
+        }
+        function hideOrShowLeft() {
+            const left = document.getElementById('left');
+            const botton = document.getElementById('botton-arrow')
+            if (left.classList.contains('left-hidden')) {
+                left.classList.remove('left-hidden');
+                botton.classList.remove('arrow-reverse');
+            } else {
+                left.classList.add('left-hidden');
+                botton.classList.add('arrow-reverse');
+            }
+        }
+        if (flvjs.isSupported()) {
+            // Stream
+            function offStream(i) {
+                if (liveStreams[i]) {
+                    removeStream(liveStreams[i].id);
+                }
+            }
+            function closeStream() {
+                closeStream = true;
+                for (let i = 0; i < 4; i++) {
+                    players[i].changeStream();
+                }
+            }
+            function switchStream(i) {
+                if (!liveStreams[0]) return;
+                if (!liveStreams[i]) return;
+                const mainStreams = liveStreams[0];
+                const subStreams = liveStreams[i];
+                liveStreams[0] = subStreams;
+                liveStreams[i] = mainStreams;
+                loadStreamsByList();
+            }
+            function addStream(stream) {
+                liveStreams.push(stream);
+                loadStreamsByList();
+            }
+            function removeStream(id) {
+                let index = liveStreams.findIndex((v) => {
+                    return v.id === id;
+                });
+                if (index === -1) return;
+                liveStreams.splice(index, 1);
+                loadStreamsByList();
+            }
+            function loadStreamsByList(list) {
+                if (streamClosed) return;
+                if (list) liveStreams = list;
+                for (let i = 0; i < 4; i++) {
+                    players[i].changeStream(liveStreams[i]);
+                    if (i !== 0) players[i].muted = true;
+                }
+            }
+            // DJ
+            function closeDJ() {
+                if (usingDJ.flvPlayer === undefined) return;
+                const mute = document.getElementById('muteDJ');
+            }
+
+            // CreatePlayer
+            for (let i = 0; i < 4; i++) {
+                const e = document.getElementById(`video-container${i}`);
+                const player = new Player(e, i);
+                player.onSwitchBtnClick = switchStream;
+                players.push(player);
+            }
+
+            // CreateAudioPlayer
+            const a = document.getElementById('dj');
+            const audioPlayer = new AudioPlayer(a);
+            // WebSocket
+            var socket = io();
+            function emit(channel, msg) {
+                socket.emit(channel, msg);
+            }
+            socket.on('liveStreams-list', (streamList) => {
+                const liveList = [];
+                const djList = [];
+                for (let stream of streamList) {
+                    if (stream['app'] === 'dj') djList.push(stream);
+                    if (stream['app'] === 'live') liveList.push(stream);
+                }
+                loadStreamsByList(liveList);
+                audioPlayer.loadStreamList(djList);
+            })
+            socket.on('post-publish', (stream) => {
+                console.log(stream);
+                if (stream['app'] === 'dj') audioPlayer.addStream(stream);
+                if (stream['app'] === 'live') addStream(stream);
+            })
+            socket.on('done-publish', (id) => {
+                console.log(id);
+                removeStream(id);
+                audioPlayer.removeStream(id);
+            })
+            socket.on('update-pig', (pigs) => {
+                pigsCount = pigs;
+                document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
+            })
+            socket.on('se', (v) => {
+                playSE(v);
+            })
+            socket.on('connect', () => {
+                socket.emit('request-liveStreams');
+            })
+        }
+        function toggleFullScreen() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+
+            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                requestFullScreen.call(docEl);
+            }
+            else {
+                cancelFullScreen.call(doc);
+            }
+        }
+    </script>
+</body>
+
+</html>
