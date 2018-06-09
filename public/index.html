@@ -31,7 +31,7 @@
         <div class="navbar-background"></div>
         <div class="container">
             <div class="left-container" id="left">
-                <div class="info card">
+                <div class="info card" id="infoBoard">
                     <p>请不要直播NSFW内容。</p>
                     <p>NSFW包括但不限于 色情、残暴内容等。</p>
                     <br>
@@ -87,7 +87,7 @@
     <script src="/dist/user.js"></script>
     <script src="/dist/main.js"></script>
     <script>
-        document.write(navigator.userAgent);
+        document.getElementById('infoBoard').innerHTML = navigator.userAgent;
     </script>
 </body>
 
