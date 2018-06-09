@@ -124,6 +124,8 @@ if (flvjs.isSupported()) {
     socket.on('connect', () => {
         socket.emit('request-liveStreams', navigator.userAgent);
     })
+} else {
+    document.body.innerHTML = `<div style="text-align:center;font-size:50px;margin-top:300px;margin-left:50px;margin-right:50px;">QQ内置浏览器不支持视频播放，请使用其他浏览器打开</div>`
 }
 function toggleFullScreen() {
     const doc = window.document;

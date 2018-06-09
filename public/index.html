@@ -10,11 +10,6 @@
 </head>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/dist/polyfill.min.js"></script>
-    <script src="/dist/player.js"></script>
-    <script src="/dist/audioPlayer.js"></script>
     <div class="background"></div>
     <div class="main">
         <div class="navbar">
@@ -84,11 +79,13 @@
         </div>
 
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/dist/polyfill.min.js"></script>
+    <script src="/dist/player.js"></script>
+    <script src="/dist/audioPlayer.js"></script>
     <script src="/dist/user.js"></script>
     <script src="/dist/main.js"></script>
-    <script>
-        document.getElementById('infoBoard').innerHTML = navigator.userAgent;
-    </script>
 </body>
 
 </html>
