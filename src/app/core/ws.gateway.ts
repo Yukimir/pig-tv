@@ -35,6 +35,7 @@ export class WsGateway implements OnGatewayInit {
     }
     @SubscribeMessage('request-liveStreams')
     onRequestLiveStreams(client: Socket, data) {
+        console.log(data);
         this.AudienceCount = this.AudienceCount + 1;
         this.dispatch('request-liveStreams', client);
     }

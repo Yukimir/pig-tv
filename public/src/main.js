@@ -119,10 +119,10 @@ if (flvjs.isSupported()) {
         document.getElementById('pigs-count').innerHTML = `当前有${pigsCount}只母猪正在围观`;
     })
     socket.on('se', (v) => {
-        playSE(v);
+        playSE(`/assets/${v}`);
     })
     socket.on('connect', () => {
-        socket.emit('request-liveStreams');
+        socket.emit('request-liveStreams', navigator.userAgent);
     })
 }
 function toggleFullScreen() {

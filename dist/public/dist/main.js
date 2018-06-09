@@ -154,10 +154,10 @@ if (flvjs.isSupported()) {
         document.getElementById('pigs-count').innerHTML = '\u5F53\u524D\u6709' + pigsCount + '\u53EA\u6BCD\u732A\u6B63\u5728\u56F4\u89C2';
     });
     socket.on('se', function (v) {
-        playSE(v);
+        playSE('/assets/' + v);
     });
     socket.on('connect', function () {
-        socket.emit('request-liveStreams');
+        socket.emit('request-liveStreams', navigator.userAgent);
     });
 }
 function toggleFullScreen() {
