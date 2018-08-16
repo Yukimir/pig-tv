@@ -13,7 +13,7 @@ const common_1 = require("@nestjs/common");
 const node_cqsocket_1 = require("node-cqsocket");
 let QQbotService = class QQbotService {
     constructor() {
-        this.groupID = 111438162;
+        this.groupID = [111438162, 376238247];
         this.host = '127.0.0.1';
         this.port = 60000;
         this.localPort = 60001;
@@ -21,7 +21,7 @@ let QQbotService = class QQbotService {
         this.cq = new node_cqsocket_1.cqsocket(this.host, this.port);
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
-            if (event.ID === this.groupID && Math.random() < 0.01) {
+            if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.01) {
                 this.cq.SendGroupMessage(event.ID, event.message);
             }
         });
@@ -32,7 +32,7 @@ let QQbotService = class QQbotService {
         });
     }
     emitMessage(message) {
-        this.cq.SendGroupMessage(this.groupID, message);
+        this.cq.SendGroupMessage(this.groupID[0], message);
     }
 };
 QQbotService = __decorate([

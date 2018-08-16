@@ -3,7 +3,7 @@ import { cqsocket } from 'node-cqsocket'
 
 @Injectable()
 export class QQbotService {
-    private readonly groupID = 111438162;
+    private readonly groupID = [111438162, 376238247];
     private readonly host = '127.0.0.1';
     private readonly port = 60000;
     private readonly localPort = 60001;
@@ -13,7 +13,7 @@ export class QQbotService {
         this.cq = new cqsocket(this.host, this.port);
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
-            if (event.ID === this.groupID && Math.random() < 0.01) {
+            if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.01) {
                 this.cq.SendGroupMessage(event.ID, event.message);
             }
         });
@@ -24,6 +24,6 @@ export class QQbotService {
         });
     }
     emitMessage(message) {
-        this.cq.SendGroupMessage(this.groupID, message);
+        this.cq.SendGroupMessage(this.groupID[0], message);
     }
 }
