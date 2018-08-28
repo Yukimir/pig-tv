@@ -22,7 +22,9 @@ let QQbotService = class QQbotService {
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
             if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.01) {
-                this.cq.SendGroupMessage(event.ID, event.message);
+                setTimeout(() => {
+                    this.cq.SendGroupMessage(event.ID, event.message);
+                }, 1000);
             }
         });
         this.cq.on('PrivateMessage', (event) => {

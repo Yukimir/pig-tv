@@ -15,7 +15,9 @@ export class QQbotService {
         this.cq.on('GroupMessage', (event) => {
             // console.log(event);
             if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.01) {
-                this.cq.SendGroupMessage(event.ID, event.message);
+                setTimeout(() => {
+                    this.cq.SendGroupMessage(event.ID, event.message);
+                }, 1000);
             }
         });
         this.cq.on('PrivateMessage', (event) => {
