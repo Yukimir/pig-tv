@@ -21,7 +21,7 @@ let QQbotService = class QQbotService {
         this.cq = new node_cqsocket_1.cqsocket(this.host, this.port);
         this.cq.listen(this.localPort);
         this.cq.on('GroupMessage', (event) => {
-            if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.06) {
+            if (this.groupID.indexOf(event.ID) > -1 && Math.random() < 0.01) {
                 setTimeout(() => {
                     this.cq.SendGroupMessage(event.ID, event.message);
                 }, 1000);
