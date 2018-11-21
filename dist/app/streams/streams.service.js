@@ -49,6 +49,7 @@ let StreamsService = class StreamsService {
                     streamName: user.nickname
                 };
                 this.streams.push(stream);
+                this.qqbotService.emitMessage(`【${stream.streamName}】走上了舞台，快来http://live.aigis.me:3000围观她~`);
                 this.wsGateWay.BoardCast('post-publish', {
                     id: stream.id,
                     app: stream.app,
@@ -57,7 +58,9 @@ let StreamsService = class StreamsService {
                 });
             }
             else {
-                request.delete(`http://127.0.0.1:1985/api/v1/clients/${streamEvent.client_id.toString()}`);
+                request.delete(`http://127.0.0.1:1985/api/v1/clients/${streamEvent.client_id.toString()}`).on('error', (err) => {
+                    console.log(err);
+                });
             }
         });
     }
