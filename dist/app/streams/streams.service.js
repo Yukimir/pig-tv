@@ -58,7 +58,7 @@ let StreamsService = class StreamsService {
                 });
             }
             else {
-                request.delete(`http://127.0.0.1:1985/api/v1/clients/${streamEvent.client_id.toString()}`).on('error', (err) => {
+                request.delete(`http://127.0.0.1:1935/api/v1/clients/${streamEvent.client_id.toString()}`).on('error', (err) => {
                     console.log(err);
                 });
             }
