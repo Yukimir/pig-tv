@@ -18,9 +18,11 @@ function playSE(path) {
     }
     effectElement.play();
 }
+
 function muteSE() {
     effectElement.muted = true;
 }
+
 function hideOrShowLeft() {
     var left = document.getElementById('left');
     var botton = document.getElementById('botton-arrow');
@@ -162,6 +164,7 @@ if (flvjs.isSupported()) {
 } else {
     document.body.innerHTML = '<div style="text-align:center;font-size:50px;margin-top:300px;margin-left:50px;margin-right:50px;">QQ\u5185\u7F6E\u6D4F\u89C8\u5668\u4E0D\u652F\u6301\u89C6\u9891\u64AD\u653E\uFF0C\u8BF7\u4F7F\u7528\u5176\u4ED6\u6D4F\u89C8\u5668\u6253\u5F00</div>';
 }
+
 function toggleFullScreen() {
     var doc = window.document;
     var docEl = doc.documentElement;
@@ -174,4 +177,11 @@ function toggleFullScreen() {
     } else {
         cancelFullScreen.call(doc);
     }
+}
+
+function hideGuidePanel() {
+    document.getElementById('guide-container').classList.add('none');
+}
+function showGuidePanel() {
+    document.getElementById('guide-container').classList.remove('none');
 }

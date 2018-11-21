@@ -191,3 +191,33 @@ button, input[type="submit"] {
     user-select: none;
     margin:5px;
 }
+iframe{
+    border:none;
+    height:100%;
+}
+.guide {
+    height: 800px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+    right: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20%;
+    margin-right: 20%;
+    box-shadow: 0 0 11px 4px #88888888;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.guide .close {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 20px;
+}

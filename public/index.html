@@ -19,6 +19,7 @@
             </div>
             <div id="dj"></div>
             <div class="item">
+                <p class="cursor-pointer" onclick="showGuidePanel()">教程</p>
                 <p class="cursor-pointer" onclick="showUserPanel()">登入</p>
                 <i class="fa fa-expand" aria-hidden="true" onclick="toggleFullScreen()"></i>
             </div>
@@ -32,7 +33,7 @@
                     <br>
                     <p id="pigs-count"></p>
                 </div>
-            <!--
+                <!--
                 <div class="card" style="text-align: center">
                     <button onclick="emit('se','oruga.ogg')">止まるんじゃねぇぞ</button>
                     <button onclick="emit('se','yarimasune.mp3')">やりますねぇ.mp3</button>
@@ -78,6 +79,14 @@
         <div class="panel-container">
             <div class="user-panel" id="user-panel"></div>
         </div>
+    </div>
+    <div class="guide none" id="guide-container">
+        <div class="close">
+            <div>
+                <i class="fa fa-close cursor-pointer" aria-hidden="true" onclick="hideGuidePanel()"></i>
+            </div>
+        </div>
+        <iframe src="/guide.html"> </iframe>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flv.js/1.4.2/flv.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
