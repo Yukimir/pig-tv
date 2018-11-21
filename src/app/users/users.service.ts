@@ -44,7 +44,6 @@ export class UsersService {
         }
     }
     public async ModifyUser(_id: string, modify: modifyDto) {
-        // 先不写管道了……JS太傻吊了
         if (modify.password === '') delete modify.password;
         if (modify.password !== undefined) {
             // 验证旧密码
@@ -63,7 +62,7 @@ export class UsersService {
     }
     public async Login(user: loginDto) {
         try {
-            // 密码记得md5一下
+            // 密码记得md5一下·  
             user.password = crypto.createHash('md5').update(user.password).digest('hex');
             let userInfo = await this.userModel.findOne(user);
             return userInfo;
