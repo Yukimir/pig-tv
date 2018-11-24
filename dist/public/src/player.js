@@ -1,6 +1,6 @@
 class Player {
     constructor(element, i) {
-        this.titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲', '骑空士', '德云王', '决斗者', '截胡专家']
+        this.titleList = ['史诗母猪', '传说母猪', '金母猪', '银母猪', '皇帝', '绿马甲', '骑空士', '德云王', '决斗者', '截胡专家','野猪']
         this.attachElement = element;
         this.stream = undefined;
         this.videoElement = document.createElement('video');
