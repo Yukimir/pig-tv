@@ -35,7 +35,7 @@ export class StreamsService {
                 streamName: user.nickname
             };
             this.streams.push(stream);
-            this.qqbotService.emitMessage(`舞台少女【${stream.streamName}】加入了公演，快来http://stage.aigis.me围观她~`);
+            this.qqbotService.emitMessage(`舞台少女【${stream.streamName}】加入了公演，快来http://stage.aigis.me:3000围观她~`);
             this.wsGateWay.BoardCast('post-publish', {
                 id: stream.id,
                 app: stream.app,
