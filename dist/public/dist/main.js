@@ -1,7 +1,7 @@
 'use strict';
 
 var ran = Math.floor(Math.random() * 3 + 1);
-var host = 'live.aigis.me';
+var host = 'stage.aigis.me';
 var liveStreams = [];
 var djStreams = [];
 var players = [];
