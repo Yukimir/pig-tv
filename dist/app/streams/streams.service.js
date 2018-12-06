@@ -49,7 +49,7 @@ let StreamsService = class StreamsService {
                     streamName: user.nickname
                 };
                 this.streams.push(stream);
-                this.qqbotService.emitMessage(`舞台少女【${stream.streamName}】加入了公演，快来http://stage.aigis.me:3000围观她~`);
+                this.qqbotService.emitMessage(`母猪【${stream.streamName}】走上了舞台，快来http://pigtv.moe:3000 围观她~`);
                 this.wsGateWay.BoardCast('post-publish', {
                     id: stream.id,
                     app: stream.app,
