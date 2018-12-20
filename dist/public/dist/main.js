@@ -1,7 +1,8 @@
 'use strict';
 
-var ran = Math.floor(Math.random() * 3 + 1);
-var host = 'stage.aigis.me';
+var ran = Math.floor(Math.random() * 2);
+var hosts = ['', '2'];
+var host = `live${hosts[ran]}.aigis.me`;
 var liveStreams = [];
 var djStreams = [];
 var players = [];
@@ -182,6 +183,7 @@ function toggleFullScreen() {
 function hideGuidePanel() {
     document.getElementById('guide-container').classList.add('none');
 }
+
 function showGuidePanel() {
     document.getElementById('guide-container').classList.remove('none');
 }
